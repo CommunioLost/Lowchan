@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Lowchan | Student Network</title>
+    <title>Lowchan | Student Network Hub</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="loading-overlay">Updating Campus Network...</div>
+    <div id="loading-bar" style="position:fixed; top:0; left:0; width:100%; height:2px; background:#fff; z-index:10000; transition: opacity 0.5s;"></div>
 
     <nav class="top-strip">
         <div class="strip-inner">
-            <span><b>Lowchan</b> // ID: <span id="user-id">---</span></span>
+            <span><b>Lowchan</b> // <span id="user-id">STD-00000</span></span>
             <div class="top-links">
                 <a href="settings.html">Settings</a> | <a href="donate.html">Donate</a>
             </div>
@@ -21,41 +21,61 @@
         <header class="site-header">
             <h1 class="logo">LOWCHAN</h1>
             <div class="about-box">
-                <h3>// CAMPUS BULLETIN</h3>
-                <p>The anonymous hub for students. Chat about exams, games, or campus life without a footprint.</p>
+                <h3>// CAMPUS MISSION</h3>
+                <p>
+                    Lowchan is a decentralized student bulletin. We provide a space for <b>anonymous academic discourse</b> and campus culture. 
+                    No tracking, no logins, no faculty oversight.
+                </p>
             </div>
         </header>
 
         <section class="ad-container">
             <div class="ad-slot">
-                <span>[ CAMPUS BOOKSTORE AD - 728x90 ]</span>
+                <span class="ad-label">SPONSORED_STUDENT_DEALS</span>
+                <div class="ad-content">
+                    [ ADVERTISEMENT: 728x90 STUDENT DISCOUNTS ]
+                </div>
             </div>
         </section>
 
         <main class="board-directory">
-            <h2 class="section-title">:: DIRECTORY</h2>
+            <h2 class="section-title">:: CAMPUS DIRECTORIES</h2>
             <div class="grid-layout">
                 <div class="cat-col">
                     <div class="cat-header">ACADEMICS</div>
                     <ul class="board-list">
                         <li><a href="boards/math.html">/math/ - Mathematics</a></li>
-                        <li><a href="boards/sci.html">/sci/ - Science</a></li>
+                        <li><a href="boards/sci.html">/sci/ - Science & Bio</a></li>
+                        <li><a href="boards/cs.html">/cs/ - Computer Science</a></li>
                     </ul>
                 </div>
                 <div class="cat-col">
-                    <div class="cat-header">ENTERTAINMENT</div>
+                    <div class="cat-header">INTERESTS</div>
                     <ul class="board-list">
                         <li><a href="boards/v.html">/v/ - Video Games</a></li>
+                        <li><a href="boards/a.html">/a/ - Anime</a></li>
+                        <li><a href="boards/mu.html">/mu/ - Music</a></li>
+                    </ul>
+                </div>
+                <div class="cat-col">
+                    <div class="cat-header">SOCIAL</div>
+                    <ul class="board-list">
+                        <li><a href="boards/soc.html">/soc/ - Campus Life</a></li>
+                        <li><a href="boards/adv.html">/adv/ - Student Advice</a></li>
+                        <li><a href="boards/b.html">/b/ - Random</a></li>
                     </ul>
                 </div>
             </div>
         </main>
 
         <footer class="footer-letters">
-            <a href="#">A</a> <a href="#">B</a> <a href="#">C</a> <a href="#">D</a>
-            <div class="copyright">© 2026 LOWCHAN STUDENT NET</div>
+            <div class="letter-nav">
+                <a href="index.html">Home</a> • <a href="donate.html">Donate</a> • <a href="settings.html">Settings</a> • <a href="404.html">Wiki</a>
+            </div>
+            <div class="copyright">© 2026 LOWCHAN STUDENT NETWORK</div>
         </footer>
     </div>
+
     <script src="app.js"></script>
 </body>
 </html>
