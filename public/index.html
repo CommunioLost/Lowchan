@@ -2,42 +2,109 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>/low/ - Lowchan</title>
+    <title>Lowchan | Student Network</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="board-list" class="desktop-links">
-        [ <a href="#">a</a> / <a href="#">b</a> / <a href="#">c</a> / <a href="#">d</a> / <a href="#">e</a> / <a href="#">f</a> / <a href="#">g</a> ] 
-        [ <a href="#" onclick="toggleOptions()">Settings</a> ]
-    </div>
+    <nav class="top-strip">
+        <div class="strip-inner">
+            <span><b>Lowchan</b> // Student_ID: <span id="user-id">LOADING...</span></span>
+            <div class="top-links">
+                <a href="search.html">Search</a> | 
+                <a href="settings.html">Settings</a> | 
+                <a href="faq.html">Help</a>
+            </div>
+        </div>
+    </nav>
 
-    <header class="board-header">
-        <div class="logo">LOWCHAN</div>
-        <div class="subtitle">/low/ - Low Bandwidth</div>
-    </header>
+    <div class="main-wrapper">
+        
+        <header class="site-header">
+            <h1 class="logo">LOWCHAN</h1>
+            <div class="about-box">
+                <h3>// WHAT IS THIS?</h3>
+                <p>
+                    Lowchan is an anonymous bulletin board designed for <b>students</b> to chat, study, and procrastinate without tracking. 
+                    No emails. No history. Just raw connection.
+                </p>
+            </div>
+        </header>
 
-    <hr class="header-rule">
+        <section class="ad-container">
+            <div class="ad-slot">
+                <span class="ad-label">SPONSORED_CONTENT</span>
+                <div class="ad-content">
+                    [ PLACEHOLDER FOR ADVERTISEMENT 728x90 ]<br>
+                    <small>Support Lowchan by keeping ads enabled.</small>
+                </div>
+            </div>
+        </section>
 
-    <div class="posting-mode">
-        [ <a href="#" id="new-thread-btn">Start a New Thread</a> ]
-    </div>
+        <main class="board-directory">
+            <h2 class="section-title">:: ACTIVE BOARDS</h2>
+            
+            <div class="grid-layout">
+                <div class="cat-col">
+                    <div class="cat-header">ACADEMICS</div>
+                    <ul class="board-list">
+                        <li><a href="board.html?b=math">/math/ - Mathematics</a></li>
+                        <li><a href="board.html?b=sci">/sci/ - Science & Bio</a></li>
+                        <li><a href="board.html?b=lit">/lit/ - Literature</a></li>
+                        <li><a href="board.html?b=his">/his/ - History</a></li>
+                        <li><a href="board.html?b=cs">/cs/ - Comp Sci</a></li>
+                        <li><a href="board.html?b=lang">/lang/ - Languages</a></li>
+                    </ul>
+                </div>
 
-    <div id="loading-state">
-        Updating...
-    </div>
+                <div class="cat-col">
+                    <div class="cat-header">INTERESTS</div>
+                    <ul class="board-list">
+                        <li><a href="board.html?b=v">/v/ - Video Games</a></li>
+                        <li><a href="board.html?b=a">/a/ - Anime & Manga</a></li>
+                        <li><a href="board.html?b=tv">/tv/ - Television</a></li>
+                        <li><a href="board.html?b=mu">/mu/ - Music</a></li>
+                        <li><a href="board.html?b=ck">/ck/ - Food & Cooking</a></li>
+                        <li><a href="board.html?b=fit">/fit/ - Fitness</a></li>
+                    </ul>
+                </div>
 
-    <main id="thread-container">
+                <div class="cat-col">
+                    <div class="cat-header">CAMPUS</div>
+                    <ul class="board-list">
+                        <li><a href="board.html?b=adv">/adv/ - Advice</a></li>
+                        <li><a href="board.html?b=soc">/soc/ - Social</a></li>
+                        <li><a href="board.html?b=job">/job/ - Careers</a></li>
+                        <li><a href="board.html?b=r9k">/r9k/ - Robot 9000</a></li>
+                        <li><a href="board.html?b=pol">/pol/ - Politics</a></li>
+                        <li><a href="board.html?b=b">/b/ - Random</a></li>
+                    </ul>
+                </div>
+                
+                <div class="cat-col">
+                    <div class="cat-header">CREATIVE</div>
+                    <ul class="board-list">
+                        <li><a href="board.html?b=art">/art/ - Design & Graph</a></li>
+                        <li><a href="board.html?b=3d">/3d/ - 3D Modeling</a></li>
+                        <li><a href="board.html?b=diy">/diy/ - Do It Yourself</a></li>
+                        <li><a href="board.html?b=gd">/gd/ - Game Dev</a></li>
+                        <li><a href="board.html?b=wsg">/wsg/ - Worksafe GIF</a></li>
+                    </ul>
+                </div>
+            </div>
         </main>
+        
+        <footer class="footer-letters">
+            <div class="letter-nav">
+                <a href="#">Home</a> • <a href="#">News</a> • <a href="#">Wiki</a> • <a href="#">Appeal</a> • <a href="#">Advertise</a>
+            </div>
+            <div class="copyright">
+                © 2026 LOWCHAN STUDENT NETWORK. ALL RIGHTS RESERVED.
+            </div>
+        </footer>
 
-    <hr>
-
-    <footer class="footer-text">
-        - <a href="#">About</a> - <a href="#">Feedback</a> - <a href="#">Legal</a> -
-        <br>
-        All trademarks and copyrights on this page are owned by their respective parties.
-    </footer>
-
+    </div>
+    
     <script src="app.js"></script>
 </body>
 </html>
