@@ -1,59 +1,72 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOWCHAN // SYSTEM_ACTIVE</title>
+    <title>LOWCHAN // TERMINAL_V2.0.4</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="system-grid">
+<body class="lowchan-shell">
 
-    <div id="loader" class="boot-overlay">
-        <div class="boot-log" id="boot-log">
-            <p>> [INFO] INITIALIZING LOWCHAN CORE...</p>
-            <p>> [INFO] LOADING DYNAMIC STYLES...</p>
-            <p>> [INFO] CONNECTING TO RENDER_NODE_01...</p>
-        </div>
-        <div class="boot-progress">
-            <div class="bar" id="load-bar"></div>
+    <div id="boot-shroud" class="boot-shroud">
+        <div class="boot-terminal">
+            <div class="boot-header">[ SYSTEM INITIALIZATION ]</div>
+            <div id="boot-stream" class="boot-stream"></div>
+            <div class="boot-progress-container">
+                <div id="boot-bar" class="boot-bar"></div>
+            </div>
+            <div class="boot-footer">AUTHENTICATING_ANON_SESSION...</div>
         </div>
     </div>
 
-    <nav class="system-nav glass">
-        <div class="nav-brand">LOWCHAN <span class="version">v2.0.4</span></div>
-        <div class="nav-meta">
-            <span id="active-users">000</span> USERS_ONLINE
-            <span id="system-clock">00:00:00</span>
+    <header class="sys-header">
+        <div class="sys-logo">LOWCHAN<span>v2.0.4</span></div>
+        <div class="sys-stats">
+            <div class="stat-box"><span class="label">UPLINK:</span> <span class="val">ACTIVE</span></div>
+            <div class="stat-box"><span class="label">NODES:</span> <span class="val">1,242</span></div>
+            <div class="stat-box"><span class="label">MEMORY:</span> <span class="val">74%</span></div>
         </div>
-        <div class="nav-actions">
-            <button class="ctrl-btn" onclick="UI.toggle('settings')">PREFS</button>
-            <button class="ctrl-btn donate" onclick="UI.navigate('/donate')">CONTRIBUTE</button>
-        </div>
-    </nav>
+        <div class="sys-clock" id="clock">00:00:00:00</div>
+    </header>
 
-    <main id="app-viewport">
-        <aside class="sidebar glass">
-            <section class="board-list">
-                <header>DIRECTORIES</header>
-                <nav id="boards-nav">
-                    </nav>
-            </section>
+    <section class="main-layout">
+        
+        <aside class="side-panel">
+            <div class="panel-section">
+                <div class="panel-head">COMMUNITY_INDEX</div>
+                <nav class="directory-grid">
+                    <a href="#" class="dir-link active">/all/ <span class="count">99+</span></a>
+                    <a href="#" class="dir-link">/tech/ <span class="count">42</span></a>
+                    <a href="#" class="dir-link">/art/ <span class="count">18</span></a>
+                    <a href="#" class="dir-link">/dev/ <span class="count">07</span></a>
+                </nav>
+            </div>
+            <div class="panel-section">
+                <div class="panel-head">SYSTEM_NOTICES</div>
+                <div class="notice-ticker">
+                    <p>> NODE_7_RESTARTED</p>
+                    <p>> NEW_THREAD_IN_DEV</p>
+                    <p>> DONATION_GOAL_88%</p>
+                </div>
+            </div>
         </aside>
 
-        <section class="content-stream" id="main-feed">
-            <header class="board-header">
-                <h2 id="board-title">/HOME/</h2>
-                <div class="post-controls glass">
-                    <button onclick="UI.toggle('post-composer')">CREATE_NEW_THREAD</button>
-                </div>
-            </header>
-            
-            <div id="thread-container" class="scroll-vignette">
-                </div>
-        </section>
-    </main>
+        <main class="content-hub">
+            <div class="hub-header">
+                <div class="current-path">ROOT://COMMUNITIES/ALL/THREADS</div>
+                <button class="action-btn-main" onclick="UI.openComposer()">+ SPAWN_NEW_THREAD</button>
+            </div>
 
-    <script src="/socket.io/socket.io.js"></script>
+            <div id="feed" class="post-feed">
+                </div>
+        </main>
+
+        <aside class="meta-panel">
+            <div class="panel-head">THREAD_INSPECTOR</div>
+            <div id="inspector-content" class="empty-state">SELECT_POST_TO_INSPECT</div>
+            <div class="ad-placeholder">SUPPORT_LOWCHAN_BY_DONATING</div>
+        </aside>
+    </section>
+
     <script type="module" src="app.js"></script>
 </body>
 </html>
