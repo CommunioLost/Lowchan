@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Loading Board... | Lowchan</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="top-strip">
+        <div class="strip-inner">
+            <span><b>Lowchan</b> // <a href="/">Return Home</a></span>
+            <div class="top-links">
+                <span id="board-name-display">/???/</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        
+        <header class="site-header small-header">
+            <h1 class="logo" style="font-size: 32px; margin: 10px 0;">LOWCHAN</h1>
+            <h2 id="board-title" style="color: #cbd8e8; margin-top: 0;">/board/ - Description</h2>
+        </header>
+
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.2); margin: 20px 0;">
+
+        <div class="posting-area" style="text-align: center; margin-bottom: 30px;">
+            <button onclick="alert('Posting requires a student pass.')" style="padding: 10px 20px; font-weight: bold; cursor: pointer;">[ START NEW THREAD ]</button>
+        </div>
+
+        <main id="thread-stream">
+            <div style="text-align: center; color: #cbd8e8; margin-top: 50px;">
+                Loading posts from campus network...
+            </div>
+        </main>
+
+        <footer class="footer-letters">
+            <div class="letter-nav">
+                [ <a href="/">Return to Directory</a> ]
+            </div>
+            <div class="copyright">
+                © 2026 LOWCHAN STUDENT NETWORK.
+            </div>
+        </footer>
+
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
