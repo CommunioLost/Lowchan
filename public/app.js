@@ -1,58 +1,63 @@
 // app.js
-const UI = {
-    boot() {
-        this.simulateBoot();
-        this.startClock();
-        this.generateContent();
-    },
 
-    simulateBoot() {
-        const stream = document.getElementById('boot-stream');
-        const bar = document.getElementById('boot-bar');
-        const logs = [
-            "CHECKING_STORAGE_SHARDS...", "CONNECTING_PEERS...",
-            "DECRYPTING_COMMUNITY_MANIFEST...", "MOUNTING_FILESYSTEM...",
-            "SUCCESS: LOWCHAN_CORE_ONLINE"
-        ];
-
-        let i = 0;
-        const interval = setInterval(() => {
-            if (i < logs.length) {
-                stream.innerHTML += `<div>> ${logs[i]}</div>`;
-                bar.style.width = `${(i + 1) * 20}%`;
-                i++;
-            } else {
-                clearInterval(interval);
-                setTimeout(() => document.getElementById('boot-shroud').style.display = 'none', 500);
-            }
-        }, 300);
-    },
-
-    generateContent() {
-        const feed = document.getElementById('feed');
-        // Pre-populate with dummy "busy" data
-        for (let i = 0; i < 15; i++) {
-            feed.innerHTML += `
-                <article class="post-item">
-                    <div class="post-meta">
-                        <span class="p-id">ID: ${Math.random().toString(16).substr(2, 6)}</span>
-                        <span class="p-date">2026-01-03 16:59:13</span>
-                    </div>
-                    <div class="post-title">SECURE_IMAGE_TRANSFER_NODE_${i}</div>
-                    <div class="post-preview">Information density test... [REDACTED] ... encrypted_payload.bin</div>
-                    <div class="post-footer">REPLIES: ${Math.floor(Math.random()*50)} | VIEWS: ${Math.floor(Math.random()*1000)}</div>
-                </article>
-            `;
-        }
-    },
-
-    startClock() {
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('clock').innerText = 
-                `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}:${Math.floor(Math.random()*99)}`;
-        }, 100);
-    }
+// 1. The "Fake PHP" Loading Delay
+window.onload = function() {
+    setTimeout(() => {
+        // Remove the loading text instantly (no fade out)
+        document.getElementById('loading-state').style.display = 'none';
+        
+        // Snap content in
+        renderThreads();
+    }, 450); // 450ms is the sweet spot for "Server thinking"
 };
 
-window.onload = () => UI.boot();
+// 2. The Content Generator
+function renderThreads() {
+    const container = document.getElementById('thread-container');
+    
+    // We generate "heavy" content: lots of text, IDs, dates
+    const threadHTML = `
+        <div class="thread" id="t10492">
+            <div class="post-container op">
+                <div class="file-info">File: <a href="#">image_192.jpg</a> (44KB, 600x600)</div>
+                <div class="post-meta">
+                    <span class="subject">Regarding the new API</span> 
+                    <span class="name">Anonymous</span> 
+                    <span>01/03/26(Sat)17:42:15</span> 
+                    <span class="id-tag">ID: 8f92a1</span> 
+                    <a href="#">No.10492</a>
+                </div>
+                <div class="post-message">
+                    Is anyone else noticing the latency on the socket connection?<br>
+                    <span class="greentext">>be me</span><br>
+                    <span class="greentext">>try to upload payload</span><br>
+                    <span class="greentext">>server hangs</span><br>
+                    I think the node cluster is desyncing again.
+                </div>
+            </div>
+
+            <div class="post-container">
+                <div class="reply">
+                    <div class="post-meta">
+                        <span class="name">Anonymous</span> 
+                        <span>01/03/26(Sat)17:44:02</span> 
+                        <span class="id-tag">ID: b2c001</span> 
+                        <a href="#">No.10495</a>
+                    </div>
+                    <div class="post-message">
+                        <a href="#t10492" class="quote-link">>>10492</a><br>
+                        It's working fine for me. Check your handshake headers.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    `;
+
+    // Duplicate for density
+    container.innerHTML = threadHTML.repeat(4);
+}
+
+// 3. User Identity (Invisible to user, but distinct)
+const userHash = Math.random().toString(36).substring(2, 8);
+console.log("Your Session ID (Hidden):", userHash);
