@@ -2,71 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>LOWCHAN // TERMINAL_V2.0.4</title>
+    <title>/low/ - Lowchan</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="lowchan-shell">
+<body>
 
-    <div id="boot-shroud" class="boot-shroud">
-        <div class="boot-terminal">
-            <div class="boot-header">[ SYSTEM INITIALIZATION ]</div>
-            <div id="boot-stream" class="boot-stream"></div>
-            <div class="boot-progress-container">
-                <div id="boot-bar" class="boot-bar"></div>
-            </div>
-            <div class="boot-footer">AUTHENTICATING_ANON_SESSION...</div>
-        </div>
+    <div id="board-list" class="desktop-links">
+        [ <a href="#">a</a> / <a href="#">b</a> / <a href="#">c</a> / <a href="#">d</a> / <a href="#">e</a> / <a href="#">f</a> / <a href="#">g</a> ] 
+        [ <a href="#" onclick="toggleOptions()">Settings</a> ]
     </div>
 
-    <header class="sys-header">
-        <div class="sys-logo">LOWCHAN<span>v2.0.4</span></div>
-        <div class="sys-stats">
-            <div class="stat-box"><span class="label">UPLINK:</span> <span class="val">ACTIVE</span></div>
-            <div class="stat-box"><span class="label">NODES:</span> <span class="val">1,242</span></div>
-            <div class="stat-box"><span class="label">MEMORY:</span> <span class="val">74%</span></div>
-        </div>
-        <div class="sys-clock" id="clock">00:00:00:00</div>
+    <header class="board-header">
+        <div class="logo">LOWCHAN</div>
+        <div class="subtitle">/low/ - Low Bandwidth</div>
     </header>
 
-    <section class="main-layout">
-        
-        <aside class="side-panel">
-            <div class="panel-section">
-                <div class="panel-head">COMMUNITY_INDEX</div>
-                <nav class="directory-grid">
-                    <a href="#" class="dir-link active">/all/ <span class="count">99+</span></a>
-                    <a href="#" class="dir-link">/tech/ <span class="count">42</span></a>
-                    <a href="#" class="dir-link">/art/ <span class="count">18</span></a>
-                    <a href="#" class="dir-link">/dev/ <span class="count">07</span></a>
-                </nav>
-            </div>
-            <div class="panel-section">
-                <div class="panel-head">SYSTEM_NOTICES</div>
-                <div class="notice-ticker">
-                    <p>> NODE_7_RESTARTED</p>
-                    <p>> NEW_THREAD_IN_DEV</p>
-                    <p>> DONATION_GOAL_88%</p>
-                </div>
-            </div>
-        </aside>
+    <hr class="header-rule">
 
-        <main class="content-hub">
-            <div class="hub-header">
-                <div class="current-path">ROOT://COMMUNITIES/ALL/THREADS</div>
-                <button class="action-btn-main" onclick="UI.openComposer()">+ SPAWN_NEW_THREAD</button>
-            </div>
+    <div class="posting-mode">
+        [ <a href="#" id="new-thread-btn">Start a New Thread</a> ]
+    </div>
 
-            <div id="feed" class="post-feed">
-                </div>
+    <div id="loading-state">
+        Updating...
+    </div>
+
+    <main id="thread-container">
         </main>
 
-        <aside class="meta-panel">
-            <div class="panel-head">THREAD_INSPECTOR</div>
-            <div id="inspector-content" class="empty-state">SELECT_POST_TO_INSPECT</div>
-            <div class="ad-placeholder">SUPPORT_LOWCHAN_BY_DONATING</div>
-        </aside>
-    </section>
+    <hr>
 
-    <script type="module" src="app.js"></script>
+    <footer class="footer-text">
+        - <a href="#">About</a> - <a href="#">Feedback</a> - <a href="#">Legal</a> -
+        <br>
+        All trademarks and copyrights on this page are owned by their respective parties.
+    </footer>
+
+    <script src="app.js"></script>
 </body>
 </html>
