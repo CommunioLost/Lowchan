@@ -1,20 +1,69 @@
-:root { --neon: #00f3ff; --glass: rgba(255, 255, 255, 0.05); }
-body { background: #050505; color: white; font-family: sans-serif; }
+/* style.css */
+:root {
+    --bg-deep: #050507;
+    --bg-surface: #0c0c10;
+    --accent-primary: #5c6bc0;
+    --accent-glow: rgba(92, 107, 192, 0.4);
+    --text-main: #e0e0e6;
+    --text-dim: #71717a;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --transition-speed: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-.overlay {
-    position: fixed; inset: 0; background: black;
+/* THE GRID LAYOUT */
+.system-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: 60px 1fr;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg-deep);
+}
+
+/* POST ARCHITECTURE */
+.post-card {
+    display: grid;
+    grid-template-areas: 
+        "meta actions"
+        "body body"
+        "footer footer";
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    margin: 1rem;
+    padding: 1.25rem;
+    transition: var(--transition-speed);
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.post-card:hover {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* ANON ID STYLING */
+.anon-id {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    padding: 2px 6px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+/* LOADING ANIMATION */
+.boot-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--bg-deep);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    z-index: 999; transition: opacity 0.5s;
 }
 
-.glass-nav {
-    backdrop-filter: blur(10px); background: var(--glass);
-    padding: 1rem 2rem; display: flex; justify-content: space-between;
+.boot-progress {
+    width: 300px; height: 2px; background: #222; margin-top: 2rem;
 }
 
-.hidden { display: none !important; opacity: 0; }
-
-.card {
-    background: var(--glass); border: 1px solid rgba(255,255,255,0.1);
-    padding: 2rem; border-radius: 15px; margin-top: 2rem;
+.boot-progress .bar {
+    height: 100%; background: var(--accent-primary); width: 0%;
+    box-shadow: 0 0 10px var(--accent-primary);
 }
