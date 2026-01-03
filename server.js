@@ -6,25 +6,33 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const path = require('path');
 
-// 1. Serve "public" folder files explicitly
-// This allows board.html, style.css, etc. to load correctly
 app.use(express.static(path.join(__dirname, 'public')));
 
-// 2. Default Route (The Homepage)
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// Global Store (This makes it real, not a simulation)
+let posts = []; 
 
-// 3. Socket.io Logic (Keep your existing socket logic here)
 io.on('connection', (socket) => {
-    console.log('A student connected');
-    socket.on('chat message', (msg) => {
-        io.emit('chat message', msg);
+    // When a student opens a board, send them the REAL existing posts
+    socket.on('join-board', (boardCode) => {
+        socket.join(boardCode);
+        const boardPosts = posts.filter(p => p.board === boardCode);
+        socket.emit('load-initial-posts', boardPosts);
+    });
+
+    // When a student actually clicks "Post"
+    socket.on('new-post', (data) => {
+        const newPost = {
+            id: Date.now(),
+            board: data.board,
+            user: data.user,
+            text: data.text,
+            time: new Date().toLocaleTimeString()
+        };
+        posts.push(newPost);
+        // Broadcast to everyone currently looking at that board
+        io.to(data.board).emit('render-post', newPost);
     });
 });
 
-// 4. Start Server
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-    console.log(`Lowchan Student Network running on port ${PORT}`);
-});
+server.listen(PORT, () => console.log(`System Online on ${PORT}`));
