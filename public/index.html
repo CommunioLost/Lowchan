@@ -1,37 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <title>Lowchan | Anonymous</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOWCHAN // SYSTEM_ACTIVE</title>
     <link rel="stylesheet" href="style.css">
-    <script src="/socket.io/socket.io.js"></script>
 </head>
-<body>
+<body class="system-grid">
 
-    <div id="loading-screen" class="overlay">
-        <div class="spinner"></div>
-        <p>Initializing Anonymity...</p>
+    <div id="loader" class="boot-overlay">
+        <div class="boot-log" id="boot-log">
+            <p>> [INFO] INITIALIZING LOWCHAN CORE...</p>
+            <p>> [INFO] LOADING DYNAMIC STYLES...</p>
+            <p>> [INFO] CONNECTING TO RENDER_NODE_01...</p>
+        </div>
+        <div class="boot-progress">
+            <div class="bar" id="load-bar"></div>
+        </div>
     </div>
 
-    <nav class="glass-nav">
-        <h1 onclick="navigate('/')">LOWCHAN</h1>
-        <div class="nav-links">
-            <button onclick="navigate('/donate')">♥ Donate</button>
-            <button onclick="openSettings()">⚙ Settings</button>
+    <nav class="system-nav glass">
+        <div class="nav-brand">LOWCHAN <span class="version">v2.0.4</span></div>
+        <div class="nav-meta">
+            <span id="active-users">000</span> USERS_ONLINE
+            <span id="system-clock">00:00:00</span>
+        </div>
+        <div class="nav-actions">
+            <button class="ctrl-btn" onclick="UI.toggle('settings')">PREFS</button>
+            <button class="ctrl-btn donate" onclick="UI.navigate('/donate')">CONTRIBUTE</button>
         </div>
     </nav>
 
-    <main id="view-container">
-        </main>
+    <main id="app-viewport">
+        <aside class="sidebar glass">
+            <section class="board-list">
+                <header>DIRECTORIES</header>
+                <nav id="boards-nav">
+                    </nav>
+            </section>
+        </aside>
 
-    <div id="tutorial" class="hidden overlay">
-        <div class="modal">
-            <h2>Welcome to Lowchan</h2>
-            <p id="tut-text">This is an anonymous imageboard. No accounts needed.</p>
-            <button onclick="nextTutStep()">Next</button>
-        </div>
-    </div>
+        <section class="content-stream" id="main-feed">
+            <header class="board-header">
+                <h2 id="board-title">/HOME/</h2>
+                <div class="post-controls glass">
+                    <button onclick="UI.toggle('post-composer')">CREATE_NEW_THREAD</button>
+                </div>
+            </header>
+            
+            <div id="thread-container" class="scroll-vignette">
+                </div>
+        </section>
+    </main>
 
-    <script src="app.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>
