@@ -1,69 +1,87 @@
 /* style.css */
 :root {
-    --bg-deep: #050507;
-    --bg-surface: #0c0c10;
-    --accent-primary: #5c6bc0;
-    --accent-glow: rgba(92, 107, 192, 0.4);
-    --text-main: #e0e0e6;
-    --text-dim: #71717a;
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-    --transition-speed: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --hex-bg: #08080a;
+    --hex-border: #1a1a22;
+    --hex-accent: #4f46e5;
+    --hex-accent-glow: rgba(79, 70, 229, 0.3);
+    --text-primary: #d1d1d6;
+    --text-muted: #52525b;
 }
 
-/* THE GRID LAYOUT */
-.system-grid {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    grid-template-rows: 60px 1fr;
-    height: 100vh;
+body, html { 
+    margin: 0; padding: 0; height: 100%; 
+    background-color: var(--hex-bg);
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
     overflow: hidden;
-    background: var(--bg-deep);
 }
 
-/* POST ARCHITECTURE */
-.post-card {
+/* SCANLINE EFFECT */
+body::before {
+    content: " ";
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+    z-index: 1000; pointer-events: none;
+}
+
+/* MECHANICAL LAYOUT */
+.lowchan-shell {
     display: grid;
-    grid-template-areas: 
-        "meta actions"
-        "body body"
-        "footer footer";
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    margin: 1rem;
-    padding: 1.25rem;
-    transition: var(--transition-speed);
+    grid-template-rows: 40px 1fr;
+    height: 100vh;
+}
+
+.main-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr 300px;
+    gap: 1px;
+    background: var(--hex-border); /* Acts as grid lines */
+    overflow: hidden;
+}
+
+/* SECTION PANELS */
+.side-panel, .content-hub, .meta-panel {
+    background: var(--hex-bg);
+    display: flex;
+    flex-direction: column;
+}
+
+/* HIGH-DENSITY POSTS */
+.post-item {
+    padding: 15px;
+    border-bottom: 1px solid var(--hex-border);
+    transition: background 0.2s;
+    cursor: pointer;
     position: relative;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
-.post-card:hover {
-    border-color: var(--accent-primary);
-    box-shadow: 0 0 15px var(--accent-glow);
+.post-item:hover {
+    background: rgba(255,255,255,0.02);
 }
 
-/* ANON ID STYLING */
-.anon-id {
-    font-family: var(--font-mono);
-    font-weight: 700;
-    padding: 2px 6px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 4px;
-    font-size: 0.85rem;
+.post-item::after {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+    background: var(--hex-accent); opacity: 0;
 }
 
-/* LOADING ANIMATION */
-.boot-overlay {
-    position: fixed; inset: 0; z-index: 9999;
-    background: var(--bg-deep);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
+.post-item:hover::after { opacity: 1; }
+
+/* BUTTONS: MECHANICAL */
+.action-btn-main {
+    background: #111118;
+    color: var(--hex-accent);
+    border: 1px solid var(--hex-accent);
+    padding: 8px 15px;
+    font-family: inherit;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 0 5px var(--hex-accent-glow);
 }
 
-.boot-progress {
-    width: 300px; height: 2px; background: #222; margin-top: 2rem;
-}
-
-.boot-progress .bar {
-    height: 100%; background: var(--accent-primary); width: 0%;
-    box-shadow: 0 0 10px var(--accent-primary);
+.action-btn-main:active {
+    background: var(--hex-accent);
+    color: white;
 }
