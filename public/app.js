@@ -1,58 +1,58 @@
 // app.js
 const UI = {
     boot() {
-        this.runBootSequence();
-        this.initClock();
-        this.renderInitialState();
+        this.simulateBoot();
+        this.startClock();
+        this.generateContent();
     },
 
-    async runBootSequence() {
-        const bar = document.getElementById('load-bar');
-        const log = document.getElementById('boot-log');
-        const steps = ["MAPPING_DOM", "ESTABLISHING_SOCKET", "SYNCING_THREADS"];
-        
-        for (let i = 0; i <= 100; i += 10) {
-            bar.style.width = `${i}%`;
-            if (i % 30 === 0) log.innerHTML += `<p>> [OK] ${steps[i/30] || 'READY'}</p>`;
-            await new Promise(r => setTimeout(r, 100));
+    simulateBoot() {
+        const stream = document.getElementById('boot-stream');
+        const bar = document.getElementById('boot-bar');
+        const logs = [
+            "CHECKING_STORAGE_SHARDS...", "CONNECTING_PEERS...",
+            "DECRYPTING_COMMUNITY_MANIFEST...", "MOUNTING_FILESYSTEM...",
+            "SUCCESS: LOWCHAN_CORE_ONLINE"
+        ];
+
+        let i = 0;
+        const interval = setInterval(() => {
+            if (i < logs.length) {
+                stream.innerHTML += `<div>> ${logs[i]}</div>`;
+                bar.style.width = `${(i + 1) * 20}%`;
+                i++;
+            } else {
+                clearInterval(interval);
+                setTimeout(() => document.getElementById('boot-shroud').style.display = 'none', 500);
+            }
+        }, 300);
+    },
+
+    generateContent() {
+        const feed = document.getElementById('feed');
+        // Pre-populate with dummy "busy" data
+        for (let i = 0; i < 15; i++) {
+            feed.innerHTML += `
+                <article class="post-item">
+                    <div class="post-meta">
+                        <span class="p-id">ID: ${Math.random().toString(16).substr(2, 6)}</span>
+                        <span class="p-date">2026-01-03 16:59:13</span>
+                    </div>
+                    <div class="post-title">SECURE_IMAGE_TRANSFER_NODE_${i}</div>
+                    <div class="post-preview">Information density test... [REDACTED] ... encrypted_payload.bin</div>
+                    <div class="post-footer">REPLIES: ${Math.floor(Math.random()*50)} | VIEWS: ${Math.floor(Math.random()*1000)}</div>
+                </article>
+            `;
         }
-        document.getElementById('loader').style.opacity = '0';
-        setTimeout(() => document.getElementById('loader').remove(), 500);
     },
 
-    generateAnonID() {
-        // Creates a consistent but anonymous visual hash for the user
-        const fingerprint = navigator.userAgent.length + window.screen.width;
-        return `anon_${Math.abs(fingerprint % 9999).toString(16).padStart(4, '0')}`;
-    },
-
-    renderPost(data) {
-        const template = `
-            <article class="post-card" id="p-${data.id}" data-author="${data.authorID}">
-                <header class="post-meta">
-                    <span class="anon-id" style="color: ${this.getHashColor(data.authorID)}">
-                        ID: ${data.authorID}
-                    </span>
-                    <time>${new Date().toLocaleTimeString()}</time>
-                </header>
-                <section class="post-body">
-                    ${data.content}
-                </section>
-                <footer class="post-actions">
-                    <button class="text-btn">REPLY</button>
-                    <button class="text-btn">REPORT</button>
-                </footer>
-            </article>
-        `;
-        document.getElementById('thread-container').insertAdjacentHTML('afterbegin', template);
-    },
-
-    getHashColor(str) {
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
-        return `hsl(${hash % 360}, 70%, 70%)`;
+    startClock() {
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('clock').innerText = 
+                `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}:${Math.floor(Math.random()*99)}`;
+        }, 100);
     }
 };
 
-UI.boot();
-window.UI = UI; // Expose to HTML listeners
+window.onload = () => UI.boot();
