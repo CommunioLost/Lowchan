@@ -1,124 +1,31 @@
-/* style.css */
 :root {
-    --bg-blue: #4a76a8;       /* The Main "Student" Blue */
-    --bg-darker: #3a5b82;     /* Header/Darker areas */
-    --bg-light: #5d8abf;      /* Hover states */
-    --text-white: #f0f2f5;    /* "Not that white" (Off-white) */
-    --text-dim: #cbd8e8;      /* Secondary text */
-    --ad-bg: #e9ebee;         /* Ad space background */
-    --ad-text: #555;          /* Ad text color */
+    --bg-blue: #4a76a8;
+    --text-white: #f0f2f5;
+    --ad-bg: #e9ebee;
 }
 
 body {
     background-color: var(--bg-blue);
     color: var(--text-white);
-    font-family: "Verdana", "Arial", sans-serif; /* Classic student font */
+    font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
-    font-size: 14px;
 }
 
-a { color: #fff; text-decoration: none; font-weight: bold; }
-a:hover { text-decoration: underline; color: #dcebfb; }
-
-/* LAYOUT CONTAINER */
-.main-wrapper {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 20px;
+#loading-overlay {
+    position: fixed; inset: 0; background: #000; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999; animation: fadeOut 1s forwards 0.5s;
 }
 
-/* TOP STRIP */
-.top-strip {
-    background: rgba(0,0,0,0.2);
-    padding: 5px 0;
-    font-size: 11px;
-}
-.strip-inner {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    justify-content: space-between;
-}
+@keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
 
-/* HEADER & ABOUT BOX */
-.site-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.logo {
-    font-size: 48px;
-    margin: 20px 0 10px 0;
-    letter-spacing: -2px;
-    text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
-}
-
-.about-box {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-    padding: 15px;
-    border-radius: 8px;
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: left;
-}
-.about-box h3 { margin-top: 0; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 5px;}
-
-/* AD SPACE (Middle) */
-.ad-container {
-    background: rgba(0,0,0,0.1);
-    padding: 15px;
-    margin: 30px 0;
-    border-radius: 4px;
-    text-align: center;
-}
-.ad-slot {
-    background: var(--ad-bg);
-    color: var(--ad-text);
-    width: 728px;
-    height: 90px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #ccc;
-}
-.ad-label { font-size: 9px; letter-spacing: 1px; opacity: 0.6; display: block; margin-bottom: 5px; color: #fff;}
-
-/* COMMUNITY GRID */
-.grid-layout {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    background: rgba(255,255,255,0.05);
-    padding: 20px;
-    border-radius: 8px;
-}
-
-.cat-header {
-    background: var(--bg-darker);
-    padding: 5px 10px;
-    font-weight: bold;
-    font-size: 12px;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-    border-radius: 3px;
-}
-
-.board-list { list-style: none; padding: 0; margin: 0; }
-.board-list li { margin-bottom: 6px; }
-.board-list a { color: var(--text-dim); font-weight: normal; transition: color 0.2s; }
-.board-list a:hover { color: #fff; padding-left: 3px; }
-
-/* FOOTER */
-.footer-letters {
-    margin-top: 50px;
-    text-align: center;
-    font-size: 11px;
-    opacity: 0.7;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    padding-top: 20px;
-}
+.main-wrapper { max-width: 900px; margin: 0 auto; padding: 20px; }
+.logo { font-size: 40px; text-align: center; }
+.about-box { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 5px; }
+.ad-container { background: var(--ad-bg); color: #333; height: 90px; margin: 20px 0; display: flex; align-items: center; justify-content: center; }
+.grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.cat-header { background: #3a5b82; padding: 5px; font-weight: bold; }
+.board-list { list-style: none; padding: 0; }
+.board-list a { color: #fff; text-decoration: none; }
+.top-strip { background: rgba(0,0,0,0.2); padding: 10px; font-size: 12px; }
+.strip-inner { display: flex; justify-content: space-between; max-width: 900px; margin: 0 auto; }
