@@ -1,87 +1,74 @@
 /* style.css */
 :root {
-    --hex-bg: #08080a;
-    --hex-border: #1a1a22;
-    --hex-accent: #4f46e5;
-    --hex-accent-glow: rgba(79, 70, 229, 0.3);
-    --text-primary: #d1d1d6;
-    --text-muted: #52525b;
+    --bg-color: #FFFFEE;       /* Classic "Paper" Yellow */
+    --post-bg: #F0E0D6;        /* Reply Background */
+    --border-color: #D9BFB7;   /* Dull Red/Brown border */
+    --text-main: #800000;      /* Dark Red Title */
+    --text-body: #000000;
+    --link-color: #0000EE;
+    --quote-color: #789922;    /* The famous "Green text" color */
+    --name-color: #117743;     /* Anonymous Green */
 }
 
-body, html { 
-    margin: 0; padding: 0; height: 100%; 
-    background-color: var(--hex-bg);
-    color: var(--text-primary);
-    font-family: 'JetBrains Mono', 'Fira Code', monospace;
-    overflow: hidden;
+body {
+    background-color: var(--bg-color);
+    color: var(--text-body);
+    font-family: arial, helvetica, sans-serif;
+    font-size: 13px;
+    margin: 0;
+    padding: 8px;
 }
 
-/* SCANLINE EFFECT */
-body::before {
-    content: " ";
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    background-size: 100% 2px, 3px 100%;
-    z-index: 1000; pointer-events: none;
+/* LINKS */
+a { color: var(--link-color); text-decoration: none; }
+a:hover { text-decoration: underline; color: red; }
+
+/* HEADER STUFF */
+.board-header { text-align: center; margin-bottom: 20px; }
+.logo { 
+    color: #AF0A0F; 
+    font-size: 24px; 
+    font-weight: bold; 
+    letter-spacing: -1px; 
+}
+.subtitle { font-size: 11px; }
+
+/* THE LOADING TEXT (Legacy Style) */
+#loading-state {
+    font-family: monospace;
+    font-size: 12px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    display: block; /* Visible initially */
 }
 
-/* MECHANICAL LAYOUT */
-.lowchan-shell {
-    display: grid;
-    grid-template-rows: 40px 1fr;
-    height: 100vh;
+/* POST ARCHITECTURE (Dense, Table-like) */
+.thread { margin-bottom: 25px; clear: both; }
+
+.post-container {
+    display: block;
+    margin-bottom: 4px;
 }
 
-.main-layout {
-    display: grid;
-    grid-template-columns: 240px 1fr 300px;
-    gap: 1px;
-    background: var(--hex-border); /* Acts as grid lines */
-    overflow: hidden;
+/* The Reply Box Look */
+.reply {
+    background-color: var(--post-bg);
+    border: 1px solid var(--border-color); /* The ugly border */
+    border-right: 2px solid var(--border-color); /* Fake depth */
+    border-bottom: 2px solid var(--border-color);
+    display: inline-block;
+    padding: 4px 8px;
+    min-width: 400px;
+    max-width: 100%;
 }
 
-/* SECTION PANELS */
-.side-panel, .content-hub, .meta-panel {
-    background: var(--hex-bg);
-    display: flex;
-    flex-direction: column;
-}
+/* METADATA (The "Heavy" Info) */
+.file-info { font-size: 10px; color: #666; margin-bottom: 2px; }
+.post-meta { font-size: 11px; margin-bottom: 5px; }
+.subject { color: #CC1105; font-weight: bold; }
+.name { color: var(--name-color); font-weight: bold; }
+.id-tag { color: #000; background: #fff; padding: 0 2px; border: 1px solid #ccc; font-size: 10px; border-radius: 2px;}
 
-/* HIGH-DENSITY POSTS */
-.post-item {
-    padding: 15px;
-    border-bottom: 1px solid var(--hex-border);
-    transition: background 0.2s;
-    cursor: pointer;
-    position: relative;
-}
-
-.post-item:hover {
-    background: rgba(255,255,255,0.02);
-}
-
-.post-item::after {
-    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
-    background: var(--hex-accent); opacity: 0;
-}
-
-.post-item:hover::after { opacity: 1; }
-
-/* BUTTONS: MECHANICAL */
-.action-btn-main {
-    background: #111118;
-    color: var(--hex-accent);
-    border: 1px solid var(--hex-accent);
-    padding: 8px 15px;
-    font-family: inherit;
-    font-weight: bold;
-    text-transform: uppercase;
-    cursor: pointer;
-    box-shadow: 0 0 5px var(--hex-accent-glow);
-}
-
-.action-btn-main:active {
-    background: var(--hex-accent);
-    color: white;
-}
+/* CONTENT */
+.post-message { margin: 10px 20px; line-height: 1.4; }
+.greentext { color: var(--quote-color); }
