@@ -1,74 +1,124 @@
 /* style.css */
 :root {
-    --bg-color: #FFFFEE;       /* Classic "Paper" Yellow */
-    --post-bg: #F0E0D6;        /* Reply Background */
-    --border-color: #D9BFB7;   /* Dull Red/Brown border */
-    --text-main: #800000;      /* Dark Red Title */
-    --text-body: #000000;
-    --link-color: #0000EE;
-    --quote-color: #789922;    /* The famous "Green text" color */
-    --name-color: #117743;     /* Anonymous Green */
+    --bg-blue: #4a76a8;       /* The Main "Student" Blue */
+    --bg-darker: #3a5b82;     /* Header/Darker areas */
+    --bg-light: #5d8abf;      /* Hover states */
+    --text-white: #f0f2f5;    /* "Not that white" (Off-white) */
+    --text-dim: #cbd8e8;      /* Secondary text */
+    --ad-bg: #e9ebee;         /* Ad space background */
+    --ad-text: #555;          /* Ad text color */
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-body);
-    font-family: arial, helvetica, sans-serif;
-    font-size: 13px;
+    background-color: var(--bg-blue);
+    color: var(--text-white);
+    font-family: "Verdana", "Arial", sans-serif; /* Classic student font */
     margin: 0;
-    padding: 8px;
+    padding: 0;
+    font-size: 14px;
 }
 
-/* LINKS */
-a { color: var(--link-color); text-decoration: none; }
-a:hover { text-decoration: underline; color: red; }
+a { color: #fff; text-decoration: none; font-weight: bold; }
+a:hover { text-decoration: underline; color: #dcebfb; }
 
-/* HEADER STUFF */
-.board-header { text-align: center; margin-bottom: 20px; }
-.logo { 
-    color: #AF0A0F; 
-    font-size: 24px; 
-    font-weight: bold; 
-    letter-spacing: -1px; 
+/* LAYOUT CONTAINER */
+.main-wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
 }
-.subtitle { font-size: 11px; }
 
-/* THE LOADING TEXT (Legacy Style) */
-#loading-state {
-    font-family: monospace;
+/* TOP STRIP */
+.top-strip {
+    background: rgba(0,0,0,0.2);
+    padding: 5px 0;
+    font-size: 11px;
+}
+.strip-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* HEADER & ABOUT BOX */
+.site-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo {
+    font-size: 48px;
+    margin: 20px 0 10px 0;
+    letter-spacing: -2px;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+}
+
+.about-box {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 15px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+}
+.about-box h3 { margin-top: 0; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 5px;}
+
+/* AD SPACE (Middle) */
+.ad-container {
+    background: rgba(0,0,0,0.1);
+    padding: 15px;
+    margin: 30px 0;
+    border-radius: 4px;
+    text-align: center;
+}
+.ad-slot {
+    background: var(--ad-bg);
+    color: var(--ad-text);
+    width: 728px;
+    height: 90px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+}
+.ad-label { font-size: 9px; letter-spacing: 1px; opacity: 0.6; display: block; margin-bottom: 5px; color: #fff;}
+
+/* COMMUNITY GRID */
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.cat-header {
+    background: var(--bg-darker);
+    padding: 5px 10px;
+    font-weight: bold;
     font-size: 12px;
-    margin-left: 20px;
-    margin-bottom: 20px;
-    display: block; /* Visible initially */
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    border-radius: 3px;
 }
 
-/* POST ARCHITECTURE (Dense, Table-like) */
-.thread { margin-bottom: 25px; clear: both; }
+.board-list { list-style: none; padding: 0; margin: 0; }
+.board-list li { margin-bottom: 6px; }
+.board-list a { color: var(--text-dim); font-weight: normal; transition: color 0.2s; }
+.board-list a:hover { color: #fff; padding-left: 3px; }
 
-.post-container {
-    display: block;
-    margin-bottom: 4px;
+/* FOOTER */
+.footer-letters {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 11px;
+    opacity: 0.7;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 20px;
 }
-
-/* The Reply Box Look */
-.reply {
-    background-color: var(--post-bg);
-    border: 1px solid var(--border-color); /* The ugly border */
-    border-right: 2px solid var(--border-color); /* Fake depth */
-    border-bottom: 2px solid var(--border-color);
-    display: inline-block;
-    padding: 4px 8px;
-    min-width: 400px;
-    max-width: 100%;
-}
-
-/* METADATA (The "Heavy" Info) */
-.file-info { font-size: 10px; color: #666; margin-bottom: 2px; }
-.post-meta { font-size: 11px; margin-bottom: 5px; }
-.subject { color: #CC1105; font-weight: bold; }
-.name { color: var(--name-color); font-weight: bold; }
-.id-tag { color: #000; background: #fff; padding: 0 2px; border: 1px solid #ccc; font-size: 10px; border-radius: 2px;}
-
-/* CONTENT */
-.post-message { margin: 10px 20px; line-height: 1.4; }
-.greentext { color: var(--quote-color); }
