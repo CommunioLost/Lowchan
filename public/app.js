@@ -1,64 +1,91 @@
 const socket = io();
-let currentBoard = 'home';
+let activeBoard = 'home';
+let inputBuffer = "";
+const SECRET_WORD = "nosa777"; // TYPE THIS TO UNLOCK ADMIN
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Loading Screen Timeout
-    setTimeout(() => { document.getElementById('app-loader').style.display = 'none'; }, 1600);
+    setTimeout(() => { document.getElementById('loader').style.display='none'; }, 2000);
 
-    // 2. Identity
-    let id = localStorage.getItem('lowchan_id') || "STD-" + Math.floor(10000 + Math.random()*90000);
-    localStorage.setItem('lowchan_id', id);
-    document.getElementById('user-id').innerText = id;
-    document.getElementById('settings-id').innerText = id;
+    let id = localStorage.getItem('lc_id') || "ID-" + Math.floor(Math.random()*99999);
+    localStorage.setItem('lc_id', id);
+    document.getElementById('id-tag').innerText = id;
 
-    // 3. Theme
-    changeTheme(localStorage.getItem('lowchan_theme') || 'blue');
+    document.documentElement.setAttribute('data-theme', localStorage.getItem('lc_theme') || 'blue');
 });
 
-function navigateTo(view) {
-    document.querySelectorAll('.page-view').forEach(v => v.style.display = 'none');
+// Admin Unlock Logic
+document.addEventListener("keydown", (e) => {
+    inputBuffer += e.key;
+    if (inputBuffer.length > 15) inputBuffer = inputBuffer.substring(1);
+    if (inputBuffer.includes(SECRET_WORD)) {
+        localStorage.setItem('lc_admin_token', 'CHIEF_OF_NETWORK_99');
+        localStorage.setItem('lc_id', 'ADMIN-NOSA');
+        alert("ADMIN_ACCESS_UNLOCKED");
+        location.reload();
+    }
+});
+
+function nav(target) {
+    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
     
-    if(['math', 'sci', 'cs', 'v', 'a'].includes(view)) {
-        currentBoard = view;
+    if(['math','sci','cs','v','a','mu'].includes(target)) {
+        activeBoard = target;
         document.getElementById('view-board').style.display = 'block';
-        document.getElementById('active-board-title').innerText = `/${view}/`;
-        socket.emit('request_board_history', view);
+        document.getElementById('board-title').innerText = `/${target}/`;
+        socket.emit('request_board_history', target);
     } else {
-        document.getElementById('view-' + view).style.display = 'block';
+        activeBoard = 'home';
+        document.getElementById('view-home').style.display = 'block';
+        socket.emit('request_board_history', 'home');
     }
 }
 
-function changeTheme(t) {
-    document.documentElement.setAttribute('data-theme', t);
-    localStorage.setItem('lowchan_theme', t);
+function send() {
+    const val = document.getElementById('msg').value.trim();
+    if(!val) return;
+    socket.emit('new_post', { text: val, board: 'home', userId: localStorage.getItem('lc_id') });
+    document.getElementById('msg').value = '';
 }
 
-function submitPost() {
-    const text = document.getElementById('postInput').value;
-    if(!text) return;
+function sendBoardPost() {
+    const val = document.getElementById('boardMsg').value.trim();
+    if(!val) return;
+    socket.emit('new_post', { text: val, board: activeBoard, userId: localStorage.getItem('lc_id') });
+    document.getElementById('boardMsg').value = '';
+}
+
+socket.on('receive_post', (p) => {
+    if(p.board === activeBoard) render(p);
+});
+
+socket.on('load_history', (h) => {
+    const targetFeed = activeBoard === 'home' ? 'feed' : 'boardFeed';
+    document.getElementById(targetFeed).innerHTML = '';
+    h.forEach(render);
+});
+
+socket.on('refresh_view', () => { location.reload(); });
+
+function render(p) {
+    const isMeAdmin = localStorage.getItem('lc_admin_token') === 'CHIEF_OF_NETWORK_99';
+    const isAdminPost = p.userId === "ADMIN-NOSA";
+    const targetFeed = activeBoard === 'home' ? 'feed' : 'boardFeed';
     
-    socket.emit('new_post', {
-        text: text,
-        board: currentBoard,
-        userId: localStorage.getItem('lowchan_id')
-    });
-    document.getElementById('postInput').value = '';
+    const deleteBtn = isMeAdmin ? 
+        `<button onclick="deletePost('${p.postId}')" class="del-btn">[DEL]</button>` : "";
+
+    const html = `
+        <div class="post" style="${isAdminPost ? 'border-left: 4px solid #ff4b4b;' : ''}">
+            <div class="post-meta">
+                <b style="${isAdminPost ? 'color: #ff4b4b;' : ''}">${isAdminPost ? "⚠️ ADMIN" : p.userId}</b> 
+                <small>${p.date}</small>
+                ${deleteBtn}
+            </div>
+            <p>${p.text}</p>
+        </div>`;
+    document.getElementById(targetFeed).insertAdjacentHTML('afterbegin', html);
 }
 
-socket.on('receive_post', (data) => {
-    if(data.board === currentBoard) addPostToUI(data);
-});
-
-socket.on('load_history', (history) => {
-    const container = document.getElementById('postsContainer');
-    container.innerHTML = '';
-    history.filter(p => p.board === currentBoard).forEach(addPostToUI);
-});
-
-function addPostToUI(p) {
-    const html = `<div class="post-card" style="background:var(--panel); padding:15px; margin-top:10px; border-left:3px solid var(--accent);">
-        <small>${p.userId} • ${p.date}</small>
-        <p>${p.text}</p>
-    </div>`;
-    document.getElementById('postsContainer').insertAdjacentHTML('afterbegin', html);
+function deletePost(postId) {
+    socket.emit('admin_delete', { postId: postId, token: localStorage.getItem('lc_admin_token') });
 }
