@@ -1,84 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="blue">
 <head>
     <meta charset="UTF-8">
-    <title>Lowchan | Nosa Is Good and Stinky</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lowchan | Student Network</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="loading-bar" style="position:fixed; top:0; left:0; width:100%; height:2px; background:#fff; z-index:10000; transition: opacity 0.5s;"></div>
 
-    <nav class="top-strip">
-        <div class="strip-inner">
-            <span><b>Lowchan</b> // <span id="user-id">STD-00000</span></span>
-            <div class="top-links">
-                <a href="settings.html">Settings</a> | <a href="donate.html">Donate</a>
+    <div id="app-loader">
+        <div class="loader-content">
+            <h1 class="logo">LOWCHAN</h1>
+            <div class="progress-bar"><div class="progress-fill"></div></div>
+            <p>SECURE_CONNECTION_ESTABLISHED</p>
+        </div>
+    </div>
+
+    <nav class="top-navbar">
+        <div class="nav-inner">
+            <span class="nav-brand" onclick="navigateTo('home')">LOWCHAN <small id="user-id">STD-00000</small></span>
+            <div class="nav-links">
+                <button onclick="navigateTo('settings')">Settings</button>
+                <button onclick="navigateTo('rules')">Rules</button>
+                <button onclick="navigateTo('donate')">Donate</button>
             </div>
         </div>
     </nav>
 
-    <div class="main-wrapper">
-        <header class="site-header">
-            <h1 class="logo">LOWCHAN</h1>
-            <div class="about-box">
-                <h3>// CAMPUS MISSION</h3>
-                <p>Lowchan is a simple messaging site for making stuff and chatting with people.</p>
-            </div>
-        </header>
+    <div class="container">
+        <div id="view-home" class="page-view">
+            <header class="hero">
+                <h2>CAMPUS_BULLETIN</h2>
+                <div class="about-card">
+                    <p>Anonymous hub for KatyISD students. No tracking. No faculty. No BS.</p>
+                </div>
+            </header>
 
-        <section class="ad-container">
-            <div class="ad-slot" style="min-height: 90px; display: flex; justify-content: center; align-items: center;">
+            <section class="ad-slot-wrapper">
                 <script type="text/javascript">
                     atOptions = { 'key' : 'b1637057c1ef17630b41564da4135bf9', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
                 </script>
                 <script type="text/javascript" src="https://www.highperformanceformat.com/b1637057c1ef17630b41564da4135bf9/invoke.js"></script>
-            </div>
-        </section>
+                </section>
 
-        <section class="post-box-area" style="margin-bottom: 30px;">
-            <div class="about-box" style="background: rgba(0,0,0,0.2); border: 1px dashed #fff;">
-                <h3 style="margin-top:0;">// SPAWN_NEW_THREAD</h3>
-                <textarea id="postInput" placeholder="What's happening on campus?" style="width:100%; height:80px; background:rgba(255,255,255,0.1); border:1px solid #fff; color:white; padding:10px; margin-bottom:10px; box-sizing: border-box; font-family: inherit;"></textarea>
-                <button onclick="submitPost()" style="background:#fff; color:#4a76a8; border:none; padding:10px 20px; font-weight:bold; cursor:pointer; width:100%;">[ SUBMIT_TO_NETWORK ]</button>
+            <div class="directory-grid">
+                <div class="dir-section">
+                    <h3>:: ACADEMICS</h3>
+                    <button onclick="navigateTo('math')">/math/ - Mathematics</button>
+                    <button onclick="navigateTo('sci')">/sci/ - Science</button>
+                    <button onclick="navigateTo('cs')">/cs/ - CompSci</button>
+                </div>
+                <div class="dir-section">
+                    <h3>:: INTERESTS</h3>
+                    <button onclick="navigateTo('v')">/v/ - Video Games</button>
+                    <button onclick="navigateTo('a')">/a/ - Anime</button>
+                </div>
             </div>
-        </section>
+        </div>
 
-        <section id="live-feed">
-            <h2 class="section-title">:: GLOBAL_ACTIVITY</h2>
+        <div id="view-board" class="page-view" style="display:none;">
+            <div class="board-header">
+                <h2 id="active-board-title">/board/</h2>
+                <button onclick="navigateTo('home')" class="back-btn">← Back to Directory</button>
+            </div>
+            
+            <div class="post-composer">
+                <textarea id="postInput" placeholder="Broadcast to this board..."></textarea>
+                <button onclick="submitPost()" class="submit-btn">SUBMIT_POST</button>
+            </div>
+
             <div id="postsContainer"></div>
-        </section>
+        </div>
 
-        <hr style="border:0; border-top:1px solid rgba(255,255,255,0.2); margin:40px 0;">
-
-        <main class="board-directory">
-            <h2 class="section-title">:: CAMPUS DIRECTORIES</h2>
-            <div class="grid-layout">
-                <div class="cat-col">
-                    <div class="cat-header">ACADEMICS</div>
-                    <ul class="board-list">
-                        <li><a href="boards/math.html">/math/</a></li>
-                        <li><a href="boards/sci.html">/sci/</a></li>
-                        <li><a href="boards/cs.html">/cs/</a></li>
-                    </ul>
+        <div id="view-settings" class="page-view" style="display:none;">
+            <h2>SYSTEM_SETTINGS</h2>
+            <div class="settings-card">
+                <h3>Visual Themes</h3>
+                <div class="theme-grid">
+                    <button onclick="changeTheme('blue')" class="theme-btn blue">Student Blue</button>
+                    <button onclick="changeTheme('dark')" class="theme-btn dark">Midnight</button>
+                    <button onclick="changeTheme('beige')" class="theme-btn beige">Legacy (Beige)</button>
                 </div>
-                <div class="cat-col">
-                    <div class="cat-header">INTERESTS</div>
-                    <ul class="board-list">
-                        <li><a href="boards/v.html">/v/</a></li>
-                        <li><a href="boards/a.html">/a/</a></li>
-                        <li><a href="boards/mu.html">/mu/</a></li>
-                    </ul>
-                </div>
+                <hr>
+                <p>Your Local ID: <b id="settings-id">...</b></p>
+                <button onclick="clearIdentity()" class="danger-btn">WIPE_LOCAL_IDENTITY</button>
             </div>
-        </main>
-
-        <footer class="footer-letters">
-            <div class="letter-nav">
-                <a href="index.html">Home</a> • <a href="donate.html">Donate</a> • <a href="settings.html">Settings</a>
-            </div>
-            <div class="copyright">© 2026 LOWCHAN NETWORK</div>
-        </footer>
+        </div>
     </div>
+
+    <footer class="main-footer">
+        <p>Admin: k2009546@students.katyisd.org | Discord: nosaissohot_07823</p>
+        <p>© 2026 LOWCHAN NETWORK - KATY TX</p>
+    </footer>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="app.js"></script>
