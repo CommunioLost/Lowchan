@@ -22,10 +22,7 @@
             <h1 class="logo">LOWCHAN</h1>
             <div class="about-box">
                 <h3>// CAMPUS MISSION</h3>
-                <p>
-                    Lowchan is a decentralized student bulletin. We provide a space for <b>anonymous academic discourse</b> and campus culture. 
-                    No tracking, no logins, no faculty oversight.
-                </p>
+                <p>Anonymous academic discourse and campus culture. No tracking, no logins.</p>
             </div>
         </header>
 
@@ -41,8 +38,24 @@
                     };
                 </script>
                 <script type="text/javascript" src="https://www.highperformanceformat.com/b1637057c1ef17630b41564da4135bf9/invoke.js"></script>
+            </div>
+        </section>
+
+        <section class="post-box-area" style="margin-bottom: 30px;">
+            <div class="about-box" style="background: rgba(0,0,0,0.2); border: 1px dashed #fff;">
+                <h3 style="margin-top:0;">// SPAWN_NEW_THREAD</h3>
+                <textarea id="postInput" placeholder="What's happening on campus?" style="width:100%; height:80px; background:rgba(255,255,255,0.1); border:1px solid #fff; color:white; padding:10px; margin-bottom:10px; box-sizing: border-box; font-family: inherit;"></textarea>
+                <button onclick="submitPost()" style="background:#fff; color:#4a76a8; border:none; padding:10px 20px; font-weight:bold; cursor:pointer; width:100%;">[ SUBMIT_TO_NETWORK ]</button>
+            </div>
+        </section>
+
+        <section id="live-feed">
+            <h2 class="section-title">:: GLOBAL_ACTIVITY</h2>
+            <div id="postsContainer">
                 </div>
         </section>
+
+        <hr style="border:0; border-top:1px solid rgba(255,255,255,0.2); margin:40px 0;">
 
         <main class="board-directory">
             <h2 class="section-title">:: CAMPUS DIRECTORIES</h2>
@@ -76,12 +89,11 @@
 
         <footer class="footer-letters">
             <div class="letter-nav">
-                <a href="index.html">Home</a> • <a href="donate.html">Donate</a> • <a href="settings.html">Settings</a> • <a href="404.html">Wiki</a>
+                <a href="index.html">Home</a> • <a href="donate.html">Donate</a> • <a href="settings.html">Settings</a>
             </div>
             <div class="copyright">© 2026 LOWCHAN STUDENT NETWORK</div>
         </footer>
     </div>
-
     <script src="app.js"></script>
 </body>
 </html>
