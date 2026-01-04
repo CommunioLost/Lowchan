@@ -1,62 +1,64 @@
-const socket = io(); // Connects to the real-time server
+const socket = io();
+let currentBoard = 'home';
 
 document.addEventListener("DOMContentLoaded", () => {
-    let studentId = localStorage.getItem('lowchan_user_id');
-    if (!studentId) {
-        studentId = "STD-" + Math.floor(10000 + Math.random() * 90000);
-        localStorage.setItem('lowchan_user_id', studentId);
+    // 1. Loading Screen Timeout
+    setTimeout(() => { document.getElementById('app-loader').style.display = 'none'; }, 1600);
+
+    // 2. Identity
+    let id = localStorage.getItem('lowchan_id') || "STD-" + Math.floor(10000 + Math.random()*90000);
+    localStorage.setItem('lowchan_id', id);
+    document.getElementById('user-id').innerText = id;
+    document.getElementById('settings-id').innerText = id;
+
+    // 3. Theme
+    changeTheme(localStorage.getItem('lowchan_theme') || 'blue');
+});
+
+function navigateTo(view) {
+    document.querySelectorAll('.page-view').forEach(v => v.style.display = 'none');
+    
+    if(['math', 'sci', 'cs', 'v', 'a'].includes(view)) {
+        currentBoard = view;
+        document.getElementById('view-board').style.display = 'block';
+        document.getElementById('active-board-title').innerText = `/${view}/`;
+        socket.emit('request_board_history', view);
+    } else {
+        document.getElementById('view-' + view).style.display = 'block';
     }
-    const idDisplay = document.getElementById("user-id");
-    if(idDisplay) idDisplay.innerText = studentId;
-
-    setTimeout(() => {
-        const bar = document.getElementById('loading-bar');
-        if(bar) bar.style.opacity = '0';
-    }, 500);
-});
-
-// Load the server history when joining
-socket.on('load_history', (history) => {
-    const container = document.getElementById('postsContainer');
-    if(container) {
-        container.innerHTML = '';
-        history.forEach(post => addPostToScreen(post));
-    }
-});
-
-// Listen for new posts from ANYONE
-socket.on('receive_post', (postData) => {
-    addPostToScreen(postData);
-});
-
-function submitPost() {
-    const input = document.getElementById('postInput');
-    const text = input.value.trim();
-    const userId = localStorage.getItem('lowchan_user_id') || "STD-00000";
-
-    if(!text) return alert("Write something first!");
-
-    const postPackage = {
-        text: text,
-        userId: userId
-    };
-
-    socket.emit('new_post', postPackage);
-    input.value = '';
 }
 
-function addPostToScreen(post) {
-    const container = document.getElementById('postsContainer');
-    if(!container) return;
+function changeTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('lowchan_theme', t);
+}
 
-    const html = `
-        <div style="background:rgba(255,255,255,0.1); padding:15px; margin-bottom:12px; border-left:4px solid #fff; border-radius:0 4px 4px 0;">
-            <div style="font-size:11px; opacity:0.7; margin-bottom:8px;">
-                <span style="font-weight:bold; color:#fff;">Anonymous</span> 
-                • ${post.date} • ID: ${post.userId}
-            </div>
-            <div style="font-size:14px; line-height:1.5;">${post.text}</div>
-        </div>
-    `;
-    container.insertAdjacentHTML('afterbegin', html);
+function submitPost() {
+    const text = document.getElementById('postInput').value;
+    if(!text) return;
+    
+    socket.emit('new_post', {
+        text: text,
+        board: currentBoard,
+        userId: localStorage.getItem('lowchan_id')
+    });
+    document.getElementById('postInput').value = '';
+}
+
+socket.on('receive_post', (data) => {
+    if(data.board === currentBoard) addPostToUI(data);
+});
+
+socket.on('load_history', (history) => {
+    const container = document.getElementById('postsContainer');
+    container.innerHTML = '';
+    history.filter(p => p.board === currentBoard).forEach(addPostToUI);
+});
+
+function addPostToUI(p) {
+    const html = `<div class="post-card" style="background:var(--panel); padding:15px; margin-top:10px; border-left:3px solid var(--accent);">
+        <small>${p.userId} • ${p.date}</small>
+        <p>${p.text}</p>
+    </div>`;
+    document.getElementById('postsContainer').insertAdjacentHTML('afterbegin', html);
 }
