@@ -6,33 +6,41 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const path = require('path');
 
+// Serve public files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Global Store (This makes it real, not a simulation)
-let posts = []; 
+// GLOBAL MEMORY (This stores posts on the server while it is running)
+// If the server restarts, this wipes (normal for simple imageboards)
+let globalPosts = [];
 
 io.on('connection', (socket) => {
-    // When a student opens a board, send them the REAL existing posts
-    socket.on('join-board', (boardCode) => {
-        socket.join(boardCode);
-        const boardPosts = posts.filter(p => p.board === boardCode);
-        socket.emit('load-initial-posts', boardPosts);
-    });
+    console.log('A student connected');
 
-    // When a student actually clicks "Post"
-    socket.on('new-post', (data) => {
-        const newPost = {
-            id: Date.now(),
-            board: data.board,
-            user: data.user,
-            text: data.text,
-            time: new Date().toLocaleTimeString()
-        };
-        posts.push(newPost);
-        // Broadcast to everyone currently looking at that board
-        io.to(data.board).emit('render-post', newPost);
+    // 1. When someone joins, send them the current history
+    socket.emit('load_history', globalPosts);
+
+    // 2. When someone sends a post
+    socket.on('new_post', (postData) => {
+        // Add timestamp server-side to prevent faking
+        postData.date = new Date().toLocaleString();
+        
+        // Save to server memory
+        globalPosts.push(postData);
+
+        // Keep memory clean (only keep last 100 posts)
+        if (globalPosts.length > 100) globalPosts.shift();
+
+        // BROADCAST: Send this post to EVERYONE immediately
+        io.emit('receive_post', postData);
     });
 });
 
+// Handle 404s
+app.use((req, res) => {
+    res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
+});
+
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => console.log(`System Online on ${PORT}`));
+server.listen(PORT, () => {
+    console.log(`Lowchan Real-Time Server running on port ${PORT}`);
+});
