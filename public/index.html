@@ -3,95 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lowchan</title>
+    <title>Lowchan | Global Network</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="app-loader">
-        <div class="loader-content">
+    <div id="loader">
+        <div class="loader-box">
             <h1 class="logo">LOWCHAN</h1>
-            <div class="progress-bar"><div class="progress-fill"></div></div>
-            <p>SECURE_CONNECTION_ESTABLISHED</p>
+            <div class="bar"><div class="fill"></div></div>
+            <p>SYNCING_WITH_NODE...</p>
         </div>
     </div>
 
-    <nav class="top-navbar">
-        <div class="nav-inner">
-            <span class="nav-brand" onclick="navigateTo('home')">LOWCHAN <small id="user-id">STD-00000</small></span>
-            <div class="nav-links">
-                <button onclick="navigateTo('settings')">Settings</button>
-                <button onclick="navigateTo('rules')">Rules</button>
-                <button onclick="navigateTo('donate')">Donate</button>
+    <nav class="navbar">
+        <div class="nav-content">
+            <span class="brand" onclick="nav('home')">LOWCHAN <small id="id-tag"></small></span>
+            <div class="menu">
+                <button onclick="nav('settings')">Settings</button>
+                <button onclick="nav('rules')">Rules</button>
             </div>
         </div>
     </nav>
 
-    <div class="container">
-        <div id="view-home" class="page-view">
-            <header class="hero">
-                <h2>CAMPUS_BULLETIN</h2>
-                <div class="about-card">
-                    <p>The website for freaks this is kinda like 4chan idk</p>
-                </div>
-            </header>
+    <div class="app-container">
+        <div id="view-home" class="page">
+            <div class="hero-card">
+                <h2>:: GLOBAL_ACTIVITY</h2>
+                <p>Real-time encrypted transmission. Anonymous by default.</p>
+            </div>
 
-            <section class="ad-slot-wrapper">
+            <div class="ad-box">
                 <script type="text/javascript">
                     atOptions = { 'key' : 'b1637057c1ef17630b41564da4135bf9', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
                 </script>
                 <script type="text/javascript" src="https://www.highperformanceformat.com/b1637057c1ef17630b41564da4135bf9/invoke.js"></script>
-                </section>
-
-            <div class="directory-grid">
-                <div class="dir-section">
-                    <h3>:: ACADEMICS</h3>
-                    <button onclick="navigateTo('math')">/math/ - Mathematics</button>
-                    <button onclick="navigateTo('sci')">/sci/ - Science</button>
-                    <button onclick="navigateTo('cs')">/cs/ - CompSci</button>
-                </div>
-                <div class="dir-section">
-                    <h3>:: INTERESTS</h3>
-                    <button onclick="navigateTo('v')">/v/ - Video Games</button>
-                    <button onclick="navigateTo('a')">/a/ - Anime</button>
-                </div>
             </div>
-        </div>
 
-        <div id="view-board" class="page-view" style="display:none;">
-            <div class="board-header">
-                <h2 id="active-board-title">/board/</h2>
-                <button onclick="navigateTo('home')" class="back-btn">← Back to Directory</button>
+            <div class="post-input-card">
+                <textarea id="msg" placeholder="Write a message to the network..."></textarea>
+                <button onclick="send()" class="submit-btn">EXECUTE_POST</button>
             </div>
+
+            <div id="feed"></div>
+
+            <hr class="divider">
             
-            <div class="post-composer">
-                <textarea id="postInput" placeholder="Broadcast to this board..."></textarea>
-                <button onclick="submitPost()" class="submit-btn">SUBMIT_POST</button>
+            <div class="board-grid">
+                <div class="grid-item">
+                    <h3>CORE_BOARDS</h3>
+                    <a onclick="nav('math')">/math/</a> <a onclick="nav('sci')">/sci/</a> <a onclick="nav('cs')">/cs/</a>
+                </div>
+                <div class="grid-item">
+                    <h3>INTEREST_BOARDS</h3>
+                    <a onclick="nav('v')">/v/</a> <a onclick="nav('a')">/a/</a> <a onclick="nav('mu')">/mu/</a>
+                </div>
             </div>
-
-            <div id="postsContainer"></div>
         </div>
 
-        <div id="view-settings" class="page-view" style="display:none;">
-            <h2>SYSTEM_SETTINGS</h2>
-            <div class="settings-card">
-                <h3>Visual Themes</h3>
-                <div class="theme-grid">
-                    <button onclick="changeTheme('blue')" class="theme-btn blue">Student Blue</button>
-                    <button onclick="changeTheme('dark')" class="theme-btn dark">Midnight</button>
-                    <button onclick="changeTheme('beige')" class="theme-btn beige">Legacy (Beige)</button>
-                </div>
-                <hr>
-                <p>Your Local ID: <b id="settings-id">...</b></p>
-                <button onclick="clearIdentity()" class="danger-btn">WIPE_LOCAL_IDENTITY</button>
+        <div id="view-board" class="page" style="display:none;">
+            <div class="board-top">
+                <h2 id="board-title">/board/</h2>
+                <button onclick="nav('home')" class="exit-btn">← EXIT</button>
             </div>
+            <div class="post-input-card">
+                <textarea id="boardMsg" placeholder="Post to this directory..."></textarea>
+                <button onclick="sendBoardPost()" class="submit-btn">SUBMIT_TO_BOARD</button>
+            </div>
+            <div id="boardFeed"></div>
         </div>
     </div>
-
-    <footer class="main-footer">
-        <p>Admin: k2009546@students.katyisd.org | Discord: nosaissohot_07823</p>
-        <p>© 2026 LOWCHAN NETWORK - KATY TX</p>
-    </footer>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="app.js"></script>
