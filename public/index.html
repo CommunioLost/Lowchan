@@ -2,74 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lowchan | Index</title>
+    <title>LOWCHAN NODE</title>
     <link rel="stylesheet" href="style.css">
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body class="chan-theme">
-    <header class="board-list">
-        [<a href="#" onclick="nav('home')">home</a> / 
-        <a href="#" onclick="nav('v')">v</a> / 
-        <a href="#" onclick="nav('a')">a</a> / 
-        <a href="#" onclick="nav('sci')">sci</a> / 
-        <a href="#" onclick="nav('tech')">tech</a> / 
-        <a href="#" onclick="nav('fit')">fit</a>] 
-        <span class="admin-link" onclick="openAdminPanel()">[Admin]</span>
-    </header>
-
-    <div id="app-content">
-        <div id="view-home" class="page">
-            <h1 class="site-title">LOWCHAN</h1>
-            <div class="stats-box">
-                Total Posts: <span id="total-posts">0</span> | Active Users: <span id="active-users">1</span>
+    <div class="main-wrapper">
+        <div id="view-home" class="page centered">
+            <h1 class="retro-title">LOWCHAN</h1>
+            <div class="terminal-border">
+                <p>TOTAL_POSTS: <span id="post-count">0</span></p>
+                <p>NODE_STATUS: <span style="color:green">ONLINE</span></p>
             </div>
-            <div class="board-directory">
-                <h3>Boards</h3>
-                <ul>
-                    <li><a href="#" onclick="nav('v')">/v/ - Video Games</a></li>
-                    <li><a href="#" onclick="nav('a')">/a/ - Anime & Manga</a></li>
-                    <li><a href="#" onclick="nav('tech')">/tech/ - Technology</a></li>
-                </ul>
+            
+            <div class="ad-slot-center">
+                </div>
+
+            <div class="login-box terminal-border">
+                <h3>STAFF_LOGIN</h3>
+                <input type="password" id="admin-pass" placeholder="PASSKEY">
+                <button onclick="handleLogin()">ACCESS</button>
             </div>
         </div>
 
         <div id="view-board" class="page" style="display:none;">
-            <h2 id="board-header">/board/</h2>
-            <div class="post-form-container">
-                <button onclick="toggleForm()" id="form-toggle">Start a New Thread</button>
-                <div id="post-form" class="hidden">
-                    <input type="text" id="post-pfp" placeholder="Image URL (Required)">
-                    <textarea id="post-text" placeholder="Comment"></textarea>
-                    <button onclick="submitThread()">Post</button>
+            <div class="header-area centered">
+                <h2 id="board-title" class="retro-title">/v/</h2>
+                <div class="post-box terminal-border">
+                    <input type="text" id="img-input" placeholder="Image URL">
+                    <textarea id="text-input" placeholder="Comment..."></textarea>
+                    <button id="post-btn">SUBMIT_POST</button>
                 </div>
             </div>
-            <hr>
-            <div id="thread-container" class="catalog-grid"></div>
+            <hr class="divider">
+            <div id="catalog-container" class="grid-layout"></div>
         </div>
+
+        <footer class="bottom-nav">
+            [ <a href="#" onclick="nav('home')">home</a> / 
+              <a href="#" onclick="nav('v')">v</a> / 
+              <a href="#" onclick="nav('a')">a</a> / 
+              <a href="#" onclick="nav('sci')">sci</a> / 
+              <a href="#" onclick="nav('tech')">tech</a> / 
+              <a href="#" onclick="nav('fit')">fit</a> ]
+        </footer>
     </div>
 
-    <div id="admin-modal" class="modal">
-        <div class="modal-content">
-            <h3>Staff Authentication</h3>
-            <input type="password" id="admin-pass" placeholder="Enter Credentials">
-            <button onclick="tryAdmin()">Login</button>
-            <button onclick="closeModal()">Close</button>
-        </div>
-    </div>
-
-    <div id="mod-popup" class="modal">
-        <div class="modal-content">
-            <h3>Ban User</h3>
-            <p>User ID: <span id="target-uid"></span></p>
+    <div id="mod-overlay" class="overlay" style="display:none;">
+        <div class="modal terminal-border">
+            <h3>MODERATION_PANEL</h3>
             <input type="text" id="ban-reason" placeholder="Reason">
-            <select id="ban-duration">
-                <option value="1">24 Hours</option>
-                <option value="7">7 Days</option>
-                <option value="0">Permanent</option>
+            <select id="ban-time">
+                <option value="24">24 Hours</option>
+                <option value="0">PERMANENT</option>
             </select>
-            <button onclick="executeBan()">Confirm Ban</button>
-            <button onclick="closeModal()">Cancel</button>
+            <button id="confirm-ban-btn">EXECUTE</button>
+            <button onclick="closeMod()">CANCEL</button>
         </div>
     </div>
 
