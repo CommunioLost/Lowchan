@@ -2,22 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lowchan | Internal Node</title>
     <link rel="stylesheet" href="style.css">
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-    <div id="loader"><h1>LOWCHAN</h1></div>
+
+    <div id="loader" style="position:fixed; inset:0; background:#000; z-index:10000; display:flex; align-items:center; justify-content:center; flex-direction:column; transition: opacity 0.5s;">
+        <h1 style="color:#7c3aed; font-family:monospace; margin:0;">LOWCHAN</h1>
+        <p style="color:#333; font-family:monospace; font-size:10px;">ESTABLISHING_CONNECTION...</p>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            const loader = document.getElementById('loader');
+            if(loader) {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.remove(), 500);
+            }
+        }, 3000); // 3-second emergency limit
+    </script>
+
+    <div id="announcement-bar" class="notice-strip">
+        <span id="notice-text">Welcome to the Network. Be anonymous. Be safe.</span>
+        <button id="edit-notice" style="display:none;" onclick="changeNotice()">[EDIT]</button>
+    </div>
 
     <nav class="navbar">
         <div class="nav-content">
             <div class="user-block" onclick="nav('profile')">
                 <img id="my-pfp" src="https://api.dicebear.com/7.x/identicon/svg?seed=user" class="pfp-nav">
-                <span id="id-tag">Connecting...</span>
+                <span id="id-tag">ID-00000</span>
             </div>
             <div class="nav-links">
                 <button onclick="nav('home')">Global</button>
-                <button onclick="nav('rules')">Legal/DMCA</button>
+                <button onclick="nav('rules')">Legal</button>
             </div>
         </div>
     </nav>
@@ -32,7 +52,7 @@
 
         <div id="view-home" class="page">
             <div class="composer">
-                <textarea id="msg" placeholder="Broadcast to the network..."></textarea>
+                <textarea id="msg" placeholder="Broadcast to global feed..."></textarea>
                 <button class="btn-main" onclick="send('home')">EXECUTE_POST</button>
             </div>
             <div id="feed"></div>
@@ -52,45 +72,7 @@
             </div>
         </div>
 
-        <div id="view-board" class="page" style="display:none;">
-            <div class="board-head">
-                <h2 id="board-title">/board/</h2>
-                <button class="btn-small" onclick="nav('home')">BACK</button>
-            </div>
-            <div class="composer">
-                <textarea id="board-msg" placeholder="Post to this directory..."></textarea>
-                <button class="btn-main" onclick="send('board')">SUBMIT_DATA</button>
-            </div>
-            <div id="board-feed"></div>
         </div>
-
-        <div id="view-profile" class="page" style="display:none;">
-            <div class="panel">
-                <h2>IDENTITY_SETTINGS</h2>
-                <div class="input-group">
-                    <label>PFP URL:</label>
-                    <input type="text" id="pfp-input" placeholder="https://link-to-image.png">
-                </div>
-                <div class="input-group">
-                    <label>Social Link (Discord/X):</label>
-                    <input type="text" id="social-input" placeholder="@username">
-                </div>
-                <button class="btn-main" onclick="updateProfile()">SAVE_IDENTITY</button>
-            </div>
-        </div>
-
-        <div id="view-rules" class="page" style="display:none;">
-            <div class="panel">
-                <h2>RULES_OF_ENGAGEMENT</h2>
-                <p>1. No illegal content. 2. No personal info leaks (Doxxing). 3. Use common sense.</p>
-                <hr>
-                <h2>DMCA / CONTACT</h2>
-                <p>Email: k2009546@students.katyisd.org</p>
-                <p>Discord: nosaissohot_07823</p>
-                <button class="btn-main" onclick="nav('home')">CLOSE</button>
-            </div>
-        </div>
-    </div>
 
     <script src="app.js"></script>
 </body>
