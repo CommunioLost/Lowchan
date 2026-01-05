@@ -8,6 +8,10 @@
 </head>
 <body class="chan-theme">
     <div class="main-wrapper">
+        <header class="top-bar">
+            <button onclick="openAdminModal()" class="admin-btn-top">Admin</button>
+        </header>
+
         <div id="view-home" class="page centered">
             <h1 class="retro-title">LOWCHAN</h1>
             <div class="terminal-border">
@@ -15,13 +19,9 @@
                 <p>NODE_STATUS: <span style="color:green">ONLINE</span></p>
             </div>
             
-            <div class="ad-slot-center">
-                </div>
-
-            <div class="login-box terminal-border">
-                <h3>STAFF_LOGIN</h3>
-                <input type="password" id="admin-pass" placeholder="PASSKEY">
-                <button onclick="handleLogin()">ACCESS</button>
+            <div class="about-section terminal-border">
+                <h3>WHAT_IS_LOWCHAN?</h3>
+                <p>Lowchan is a high-speed, decentralized imageboard node designed for anonymous data exchange and global discussion.</p>
             </div>
         </div>
 
@@ -29,7 +29,7 @@
             <div class="header-area centered">
                 <h2 id="board-title" class="retro-title">/v/</h2>
                 <div class="post-box terminal-border">
-                    <input type="text" id="img-input" placeholder="Image URL">
+                    <input type="text" id="img-input" placeholder="Image URL (Optional)">
                     <textarea id="text-input" placeholder="Comment..."></textarea>
                     <button id="post-btn">SUBMIT_POST</button>
                 </div>
@@ -38,26 +38,34 @@
             <div id="catalog-container" class="grid-layout"></div>
         </div>
 
+        <div id="view-admin" class="page centered" style="display:none;">
+            <h2 class="retro-title">ADMIN_PANEL</h2>
+            <div class="terminal-border">
+                <p>Welcome to the Internal Control Node.</p>
+                <button onclick="clearAllPosts()" style="background:red;">WIPE_ALL_POSTS</button>
+            </div>
+            <div id="admin-log" class="terminal-border">
+                <h4>System Logs:</h4>
+                <ul id="log-list"></ul>
+            </div>
+        </div>
+
         <footer class="bottom-nav">
-            [ <a href="#" onclick="nav('home')">home</a> / 
-              <a href="#" onclick="nav('v')">v</a> / 
-              <a href="#" onclick="nav('a')">a</a> / 
-              <a href="#" onclick="nav('sci')">sci</a> / 
-              <a href="#" onclick="nav('tech')">tech</a> / 
-              <a href="#" onclick="nav('fit')">fit</a> ]
+            <div class="board-names">
+                [ <a onclick="nav('v')">Video Games</a> / <a onclick="nav('a')">Anime</a> / <a onclick="nav('sci')">Science</a> / <a onclick="nav('tech')">Technology</a> ]
+            </div>
+            <div class="board-abrev">
+                [ <a onclick="nav('home')">home</a> / <a onclick="nav('v')">v</a> / <a onclick="nav('a')">a</a> / <a onclick="nav('sci')">sci</a> / <a onclick="nav('tech')">tech</a> / <a onclick="nav('admin')" id="admin-tab" style="display:none; color:red;">admin</a> ]
+            </div>
         </footer>
     </div>
 
-    <div id="mod-overlay" class="overlay" style="display:none;">
-        <div class="modal terminal-border">
-            <h3>MODERATION_PANEL</h3>
-            <input type="text" id="ban-reason" placeholder="Reason">
-            <select id="ban-time">
-                <option value="24">24 Hours</option>
-                <option value="0">PERMANENT</option>
-            </select>
-            <button id="confirm-ban-btn">EXECUTE</button>
-            <button onclick="closeMod()">CANCEL</button>
+    <div id="admin-modal" class="modal" style="display:none;">
+        <div class="modal-content terminal-border">
+            <h3>STAFF_LOGIN</h3>
+            <input type="password" id="admin-pass" placeholder="Enter High-Strength Key">
+            <button onclick="handleLogin()">ACCESS</button>
+            <button onclick="closeAdminModal()">CLOSE</button>
         </div>
     </div>
 
