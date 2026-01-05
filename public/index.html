@@ -1,80 +1,85 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="blue">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lowchan | Global Network</title>
     <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
 </head>
-<body>
+<body style="background: #050505; color: white; margin: 0;">
 
-    <div id="loader">
-        <div class="loader-box">
-            <h1 class="logo">LOWCHAN</h1>
-            <div class="bar"><div class="fill"></div></div>
-            <p>SYNCING_WITH_NODE...</p>
+    <div id="loader" style="position:fixed; inset:0; background:#000; z-index:10000; display:flex; align-items:center; justify-content:center; text-align:center; font-family:sans-serif;">
+        <div>
+            <h1 style="color:#7c3aed; margin:0;">LOWCHAN</h1>
+            <p style="color:#555; font-size:12px;">SYNCING_NODES...</p>
         </div>
     </div>
 
-    <nav class="navbar">
-        <div class="nav-content">
-            <span class="brand" onclick="nav('home')">LOWCHAN <small id="id-tag"></small></span>
+    <script>
+        setTimeout(() => { 
+            const l = document.getElementById('loader');
+            if(l) l.style.opacity = '0';
+            setTimeout(() => { if(l) l.remove(); }, 500);
+        }, 3000);
+    </script>
+
+    <nav class="navbar" style="padding: 15px; background: rgba(255,255,255,0.05);">
+        <div class="nav-content" style="max-width: 900px; margin: 0 auto; display: flex; justify-content: space-between;">
+            <span class="brand" onclick="nav('home')" style="cursor:pointer; font-weight:bold;">LOWCHAN <small id="id-tag" style="opacity:0.5;"></small></span>
             <div class="menu">
-                <button onclick="nav('settings')">Settings</button>
-                <button onclick="nav('rules')">Rules</button>
+                <button onclick="nav('rules')" style="background:none; border:1px solid #444; color:white; cursor:pointer;">Rules</button>
             </div>
         </div>
     </nav>
 
-    <div class="app-container">
+    <div class="app-container" style="max-width: 800px; margin: 20px auto; padding: 0 20px;">
+        
         <div id="view-home" class="page">
-            <div class="hero-card">
-                <h2>:: GLOBAL_ACTIVITY</h2>
-                <p>Real-time encrypted transmission. Anonymous by default.</p>
+            <div class="hero-card" style="margin-bottom: 20px;">
+                <h2 style="color: #7c3aed;">:: GLOBAL_ACTIVITY</h2>
+                <div class="ad-box" style="background:#111; padding:10px; min-height:90px; margin: 15px 0;">
+                    <script type="text/javascript">
+                        atOptions = { 'key' : 'b1637057c1ef17630b41564da4135bf9', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
+                    </script>
+                    <script type="text/javascript" src="https://www.highperformanceformat.com/b1637057c1ef17630b41564da4135bf9/invoke.js"></script>
+                </div>
             </div>
 
-            <div class="ad-box">
-                <script type="text/javascript">
-                    atOptions = { 'key' : 'b1637057c1ef17630b41564da4135bf9', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
-                </script>
-                <script type="text/javascript" src="https://www.highperformanceformat.com/b1637057c1ef17630b41564da4135bf9/invoke.js"></script>
-            </div>
-
-            <div class="post-input-card">
-                <textarea id="msg" placeholder="Write a message to the network..."></textarea>
-                <button onclick="send()" class="submit-btn">EXECUTE_POST</button>
+            <div class="post-input-card" style="background: #111; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <textarea id="msg" style="width:100%; height:80px; background:#000; color:white; border:1px solid #333; padding:10px; box-sizing:border-box;" placeholder="Write to the network..."></textarea>
+                <button onclick="send()" style="width:100%; padding:10px; margin-top:10px; background:#7c3aed; border:none; color:white; font-weight:bold; cursor:pointer;">EXECUTE_POST</button>
             </div>
 
             <div id="feed"></div>
 
-            <hr class="divider">
-            
-            <div class="board-grid">
+            <div class="board-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:30px;">
                 <div class="grid-item">
-                    <h3>CORE_BOARDS</h3>
-                    <a onclick="nav('math')">/math/</a> <a onclick="nav('sci')">/sci/</a> <a onclick="nav('cs')">/cs/</a>
+                    <h3 style="font-size:12px; opacity:0.5;">ACADEMICS</h3>
+                    <button onclick="nav('math')">/math/</button>
+                    <button onclick="nav('sci')">/sci/</button>
                 </div>
                 <div class="grid-item">
-                    <h3>INTEREST_BOARDS</h3>
-                    <a onclick="nav('v')">/v/</a> <a onclick="nav('a')">/a/</a> <a onclick="nav('mu')">/mu/</a>
+                    <h3 style="font-size:12px; opacity:0.5;">INTERESTS</h3>
+                    <button onclick="nav('v')">/v/</button>
+                    <button onclick="nav('a')">/a/</a>
                 </div>
             </div>
         </div>
 
         <div id="view-board" class="page" style="display:none;">
-            <div class="board-top">
+            <div class="board-top" style="display:flex; justify-content:space-between; align-items:center;">
                 <h2 id="board-title">/board/</h2>
-                <button onclick="nav('home')" class="exit-btn">← EXIT</button>
+                <button onclick="nav('home')" style="background:#333; color:white; border:none; padding:5px 15px; cursor:pointer;">EXIT</button>
             </div>
-            <div class="post-input-card">
-                <textarea id="boardMsg" placeholder="Post to this directory..."></textarea>
-                <button onclick="sendBoardPost()" class="submit-btn">SUBMIT_TO_BOARD</button>
+            <div class="post-input-card" style="background: #111; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <textarea id="boardMsg" style="width:100%; height:80px; background:#000; color:white; border:1px solid #333; padding:10px; box-sizing:border-box;" placeholder="Post to board..."></textarea>
+                <button onclick="sendBoardPost()" style="width:100%; padding:10px; margin-top:10px; background:#7c3aed; border:none; color:white; font-weight:bold; cursor:pointer;">SUBMIT</button>
             </div>
             <div id="boardFeed"></div>
         </div>
     </div>
 
-    <script src="/socket.io/socket.io.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
