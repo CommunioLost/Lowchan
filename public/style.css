@@ -1,70 +1,40 @@
-body.chan-theme {
-    background-color: #f0e0d6; /* Beige */
-    font-family: "Courier New", monospace;
-    color: #800000; /* Deep Red */
-    margin: 0;
-    display: flex;
-    justify-content: center;
-}
-
-.main-wrapper {
+.top-bar {
     width: 100%;
-    max-width: 900px;
-}
-
-.centered {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.terminal-border {
-    border: 2px solid #800000;
-    padding: 20px;
-    background: #fff;
-    box-shadow: 4px 4px 0px #800000;
-    margin: 10px;
-}
-
-.retro-title {
-    font-size: 3rem;
-    text-shadow: 2px 2px #ccc;
-    margin-bottom: 5px;
-}
-
-.grid-layout {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #e0d0c6;
-    text-align: center;
+    justify-content: flex-end;
     padding: 10px;
-    border-top: 1px solid #800000;
 }
 
-.thread-card img.thumb {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
+.admin-btn-top {
+    background: transparent;
+    border: 1px solid #800000;
+    color: #800000;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.about-section {
+    margin-top: 30px;
+    max-width: 500px;
+    font-size: 14px;
+}
+
+.no-img {
+    height: 100px;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
     border: 1px solid #800000;
 }
 
-button {
-    background: #800000;
-    color: white;
-    border: none;
-    padding: 5px 15px;
-    cursor: pointer;
-    font-family: monospace;
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
-
-button:hover { background: #a00000; }
