@@ -1,2 +1,105 @@
 /* LOWCHAN CORE - ENCRYPTED V1.0.4 */\
-const _0x221a=io({transports:['websocket','polling'],upgrade:!![],reconnection:!![]});let _0x4c2b='home',_0x112f="";function _0x9b22(){const _0x512a=document['getElementById']('loader');if(_0x512a){_0x512a['style']['opacity']='0';setTimeout(()=>_0x512a['remove'](),0x1f4);}const _0x442b=document['getElementById']('notice-text');if(_0x442b)_0x442b['innerText']="SYSTEM_BYPASS: Input Enabled";const _0xinput=document['getElementById']('post-input');if(_0xinput){_0xinput['disabled']=![];_0xinput['placeholder']="Enter transmission...";}}document['addEventListener']("DOMContentLoaded",()=>{const _0xinput=document['getElementById']('post-input');if(_0xinput){_0xinput['disabled']=!![];_0xinput['placeholder']="Waking up server...";}setTimeout(_0x9b22,0xbb8);let _0x22ab=localStorage['getItem']('lc_id')||"ID-"+Math['floor'](Math['random']()*0x1869f);localStorage['setItem']('lc_id',_0x22ab);document['getElementById']('id-tag')['innerText']=_0x22ab;_0x221a['emit']('request_board_history','home');});_0x221a['on']('connect',()=>{_0x9b22();document['getElementById']('notice-text')['innerText']="ONLINE: Secure Link Established";});function nav(_0x11a2){document['querySelectorAll']('.page')['forEach'](_0x4421=>{_0x4421['style']['display']='none';});if(['profile','rules']['includes'](_0x11a2)){document['getElementById']('view-'+_0x11a2)['style']['display']='block';}else{_0x4c2b=_0x11a2;document['getElementById']('view-feed')['style']['display']='block';document['getElementById']('board-title')['innerText']='/'+_0x11a2+'/';document['getElementById']('dir-menu')['style']['display']=(_0x11a2==='home')?'block':'none';_0x221a['emit']('request_board_history',_0x11a2);}}function handleSubmit(){const _0x332a=document['getElementById']('post-input'),_0x1192=_0x332a['value']['trim']();if(!_0x1192)return;if(!_0x221a['connected']){alert("Wait for connection...");return;}_0x221a['emit']('new_post',{'text':_0x1192,'board':_0x4c2b,'userId':localStorage['getItem']('lc_id'),'pfp':localStorage['getItem']('lc_pfp')||"https://api.dicebear.com/7.x/identicon/svg?seed="+localStorage['getItem']('lc_id')});_0x332a['value']='';}_0x221a['on']('load_history',(_0x882a)=>{const _0x5521=document['getElementById']('main-feed');_0x5521['innerHTML']='';_0x882a['forEach'](_0x3c2b);});_0x221a['on']('receive_post',(_0x1112)=>{if(_0x1112['board']===_0x4c2b)_0x3c2b(_0x1112);});function _0x3c2b(_0x222a){const _0x991a=localStorage['getItem']('lc_admin_token'),_0x5a21=['CHIEF_OF_NETWORK_99','BROTHER_SUPREME_LEADER']['includes'](_0x991a),_0x441a=(_0x5a21||_0x991a==='JANITOR_TOKEN')?`<button onclick="delPost('${_0x222a['postId']}')" class="admin-btn">DEL</button>`:"",_0x11a1=_0x5a21?`<button onclick="banUser('${_0x222a['userId']}')" class="admin-btn ban">BAN</button>`:"",_0x772b=/(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/gi,_0x0101=_0x222a['text']['replace'](_0x772b,_0x9182=>`<br><img src="${_0x9182}" class="media-content">`),_0x4112=`<div class="post"><img src="${_0x222a['pfp']}" class="pfp-post"><div class="post-body"><div class="meta"><b>${_0x222a['userId']}</b> ${_0x441a} ${_0x11a1}</div><p>${_0x0101}</p></div></div>`;document['getElementById']('main-feed')['insertAdjacentHTML']('afterbegin',_0x4112);}document['addEventListener']("keydown",(_0x4b12)=>{_0x112f+=_0x4b12['key'];if(_0x112f['length']>0x32)_0x112f=_0x112f['substring'](0x1);if(_0x112f['includes'](atob("bm9zYTc3Nw==")))_0x8221(atob("Q0hJRUZfT0ZfTkVUV09SS185OQ=="),"ADMIN-NOSA");if(_0x112f['includes'](atob("YW1hemluZ2Jyb3RoZXJheW9pc3NvY29vbDE=")))_0x8221(atob("QlJPVEhFUl9TVVBSRU1FX0xFQURFUg=="),"ADMIN-BRO");});function _0x8221(_0x12a2,_0x551a){localStorage['setItem']('lc_admin_token',_0x12a2);localStorage['setItem']('lc_id',_0x551a);location['reload']();}function delPost(_0x991b){_0x221a['emit']('admin_delete',{'postId':_0x991b,'token':localStorage['getItem']('lc_admin_token')});}function banUser(_0x11bc){_0x221a['emit']('admin_ban',{'targetId':_0x11bc,'token':localStorage['getItem']('lc_admin_token')});}_0x221a['on']('refresh_view',()=>location['reload']());
+const _0xIO = io({transports:['websocket','polling'], upgrade:true});
+let _0xBRD = 'home', _0xBUF = "";
+
+// FAILSAFE: Unlocks the UI
+function _0xUNLOCK() {
+    const loader = document.getElementById('loader');
+    if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.remove(), 400);
+    }
+    const inp = document.getElementById('post-input');
+    if (inp) {
+        inp.disabled = false;
+        inp.placeholder = "Enter transmission...";
+    }
+    const notice = document.getElementById('notice-text');
+    if (notice) notice.innerText = "SYSTEM_READY: Input Active";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Force unlock after 3.5 seconds
+    setTimeout(_0xUNLOCK, 3500);
+    
+    let uid = localStorage.getItem('lc_id') || "ID-" + Math.floor(Math.random()*99999);
+    localStorage.setItem('lc_id', uid);
+    const idTag = document.getElementById('id-tag');
+    if (idTag) idTag.innerText = uid;
+    
+    _0xIO.emit('request_board_history', 'home');
+});
+
+_0xIO.on('connect', () => {
+    _0xUNLOCK();
+    const notice = document.getElementById('notice-text');
+    if (notice) notice.innerText = "ONLINE: Secure Link Established";
+});
+
+function nav(t) {
+    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+    if (['profile','rules'].includes(t)) {
+        document.getElementById('view-' + t).style.display = 'block';
+    } else {
+        _0xBRD = t;
+        document.getElementById('view-feed').style.display = 'block';
+        document.getElementById('board-title').innerText = '/' + t + '/';
+        const menu = document.getElementById('dir-menu');
+        if (menu) menu.style.display = (t === 'home') ? 'block' : 'none';
+        _0xIO.emit('request_board_history', t);
+    }
+}
+
+function handleSubmit() {
+    const input = document.getElementById('post-input');
+    const val = input.value.trim();
+    if (!val) return;
+    if (!_0xIO.connected) { alert("Waiting for server..."); return; }
+    
+    _0xIO.emit('new_post', {
+        text: val,
+        board: _0xBRD,
+        userId: localStorage.getItem('lc_id'),
+        pfp: localStorage.getItem('lc_pfp') || "https://api.dicebear.com/7.x/identicon/svg?seed=" + localStorage.getItem('lc_id')
+    });
+    input.value = '';
+}
+
+_0xIO.on('load_history', (data) => {
+    const feed = document.getElementById('main-feed');
+    if (feed) {
+        feed.innerHTML = '';
+        data.forEach(_0xRENDER);
+    }
+});
+
+_0xIO.on('receive_post', (p) => { if (p.board === _0xBRD) _0xRENDER(p); });
+
+function _0xRENDER(p) {
+    const token = localStorage.getItem('lc_admin_token');
+    const isAdmin = ['CHIEF_OF_NETWORK_99', 'BROTHER_SUPREME_LEADER'].includes(token);
+    const delBtn = (isAdmin || token === 'JANITOR_TOKEN') ? `<button onclick="_0xDEL('${p.postId}')" class="admin-btn">DEL</button>` : "";
+    const banBtn = isAdmin ? `<button onclick="_0xBAN('${p.userId}')" class="admin-btn ban">BAN</button>` : "";
+    const regex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/gi;
+    const cleanTxt = p.text.replace(regex, (u) => `<br><img src="${u}" class="media-content">`);
+    const html = `<div class="post"><img src="${p.pfp}" class="pfp-post"><div class="post-body"><div class="meta"><b>${p.userId}</b> ${delBtn} ${banBtn}</div><p>${cleanTxt}</p></div></div>`;
+    const feed = document.getElementById('main-feed');
+    if (feed) feed.insertAdjacentHTML('afterbegin', html);
+}
+
+document.addEventListener("keydown", (e) => {
+    _0xBUF += e.key; if (_0xBUF.length > 50) _0xBUF = _0xBUF.substring(1);
+    // atob codes for nosa777 and amazingbrother...
+    if (_0xBUF.includes(atob("bm9zYTc3Nw=="))) _0xAUTH(atob("Q0hJRUZfT0ZfTkVUV09SS185OQ=="), "ADMIN-NOSA");
+    if (_0xBUF.includes(atob("YW1hemluZ2Jyb3RoZXJheW9pc3NvY29vbDE="))) _0xAUTH(atob("QlJPVEhFUl9TVVBSRU1FX0xFQURFUg=="), "ADMIN-BRO");
+});
+
+function _0xAUTH(t, n) {
+    localStorage.setItem('lc_admin_token', t);
+    localStorage.setItem('lc_id', n);
+    location.reload();
+}
+
+function _0xDEL(id) { _0xIO.emit('admin_delete', { postId: id, token: localStorage.getItem('lc_admin_token') }); }
+function _0xBAN(u) { _0xIO.emit('admin_ban', { targetId: u, token: localStorage.getItem('lc_admin_token') }); }
+_0xIO.on('refresh_view', () => location.reload());
