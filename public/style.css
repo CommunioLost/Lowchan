@@ -1,68 +1,70 @@
-:root {
-    --bg-color: #f0e0d6; /* Pale Beige */
-    --board-bg: #fefefe;
-    --text-color: #800000; /* Dark Red links */
-    --link-color: #0000ee; /* Classic Blue */
-}
-
-body {
-    background-color: var(--bg-color);
-    font-family: arial, helvetica, sans-serif;
-    color: #333;
+body.chan-theme {
+    background-color: #f0e0d6; /* Beige */
+    font-family: "Courier New", monospace;
+    color: #800000; /* Deep Red */
     margin: 0;
-    line-height: 1.4;
-}
-
-.board-list {
-    background: #e0d0c6;
-    padding: 5px;
-    font-size: 12px;
-    border-bottom: 1px solid #cca;
-}
-
-.catalog-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 15px;
-    padding: 20px;
-}
-
-.thread-card {
-    background: #d6daf0; /* Classic board light blue */
-    border: 1px solid #b7c5d9;
-    padding: 5px;
-    text-align: center;
-    transition: transform 0.2s;
-}
-
-.thread-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.thread-img {
-    max-width: 150px;
-    max-height: 150px;
-    border: 1px solid #888;
-}
-
-.vote-bar {
-    font-weight: bold;
-    color: #444;
-    cursor: pointer;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    top:0; left:0; width:100%; height:100%;
-    background: rgba(0,0,0,0.5);
+    display: flex;
     justify-content: center;
-    align-items: center;
 }
 
-.modal-content {
-    background: white;
-    padding: 20px;
-    border: 2px solid var(--text-color);
+.main-wrapper {
+    width: 100%;
+    max-width: 900px;
 }
+
+.centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.terminal-border {
+    border: 2px solid #800000;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 4px 4px 0px #800000;
+    margin: 10px;
+}
+
+.retro-title {
+    font-size: 3rem;
+    text-shadow: 2px 2px #ccc;
+    margin-bottom: 5px;
+}
+
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #e0d0c6;
+    text-align: center;
+    padding: 10px;
+    border-top: 1px solid #800000;
+}
+
+.thread-card img.thumb {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border: 1px solid #800000;
+}
+
+button {
+    background: #800000;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    cursor: pointer;
+    font-family: monospace;
+}
+
+button:hover { background: #a00000; }
