@@ -1,107 +1,77 @@
 const socket = io();
 let currentBoard = 'home';
-let secretBuffer = "";
+let isAdmin = false;
 
-// 1. THE UNLOCKER (Fixes the "Can't write" issue)
-function unlockSystem() {
-    const loader = document.getElementById('loader');
-    if (loader) loader.style.display = 'none';
-
-    const input = document.getElementById('post-input');
-    if (input) {
-        input.disabled = false;
-        input.placeholder = "Write a message...";
+// 1. Navigation & Catalog
+function nav(board) {
+    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+    if (board === 'home') {
+        document.getElementById('view-home').style.display = 'block';
+    } else {
+        currentBoard = board;
+        document.getElementById('view-board').style.display = 'block';
+        document.getElementById('board-header').innerText = `/${board}/`;
+        socket.emit('request_threads', board);
     }
-    
-    const notice = document.getElementById('notice-text');
-    if (notice) notice.innerText = "Connected to Lowchan Node";
 }
 
-// 2. INITIALIZE
-document.addEventListener("DOMContentLoaded", () => {
-    // If server is slow, force unlock after 3 seconds
-    setTimeout(unlockSystem, 3000);
-
-    let myID = localStorage.getItem('lc_id') || "ID-" + Math.floor(Math.random() * 9999);
-    localStorage.setItem('lc_id', myID);
-    
-    const idTag = document.getElementById('id-tag');
-    if (idTag) idTag.innerText = myID;
-
-    socket.emit('request_board_history', 'home');
-});
-
-socket.on('connect', () => {
-    unlockSystem();
-});
-
-// 3. NAVIGATION
-function nav(target) {
-    currentBoard = target;
-    const title = document.getElementById('board-title');
-    if (title) title.innerText = "/" + target + "/";
-    
-    // Clear feed and request new history
-    const feed = document.getElementById('main-feed');
-    if (feed) feed.innerHTML = "Loading transmissions...";
-    
-    socket.emit('request_board_history', target);
+// 2. Voting System
+function vote(postId, type) {
+    socket.emit('cast_vote', { postId, type });
 }
 
-// 4. POSTING
-function handleSubmit() {
-    const input = document.getElementById('post-input');
-    const val = input.value.trim();
-    
-    if (!val) return;
-    if (!socket.connected) {
-        alert("Server is still waking up. Try again in 5 seconds.");
-        return;
-    }
-
-    socket.emit('new_post', {
-        text: val,
-        board: currentBoard,
-        userId: localStorage.getItem('lc_id'),
-        pfp: "https://api.dicebear.com/7.x/identicon/svg?seed=" + localStorage.getItem('lc_id')
+// 3. Rendering Catalog Style
+socket.on('thread_list', (threads) => {
+    const container = document.getElementById('thread-container');
+    container.innerHTML = '';
+    threads.forEach(t => {
+        const card = `
+            <div class="thread-card">
+                <img src="${t.img}" class="thread-img">
+                <div class="thread-info">
+                    <div class="vote-bar">
+                        <span onclick="vote('${t.id}', 'up')">▲</span>
+                        <span>${t.score || 0}</span>
+                        <span onclick="vote('${t.id}', 'down')">▼</span>
+                    </div>
+                    <p class="thread-excerpt">${t.text.substring(0, 50)}...</p>
+                    ${isAdmin ? `<button onclick="openMod('${t.userId}')">BAN</button> <button onclick="del('${t.id}')">DEL</button>` : ''}
+                </div>
+            </div>`;
+        container.insertAdjacentHTML('beforeend', card);
     });
-    input.value = "";
-}
-
-// 5. RENDERING
-socket.on('load_history', (data) => {
-    const feed = document.getElementById('main-feed');
-    if (feed) {
-        feed.innerHTML = "";
-        data.forEach(renderPost);
-    }
 });
 
-socket.on('receive_post', (post) => {
-    if (post.board === currentBoard) renderPost(post);
-});
-
-function renderPost(p) {
-    const feed = document.getElementById('main-feed');
-    if (!feed) return;
-
-    const html = `
-        <div style="border-bottom:1px solid #222; padding:10px; margin-bottom:5px;">
-            <b style="color:#7c3aed;">${p.userId}</b>: 
-            <span>${p.text}</span>
-        </div>`;
-    feed.insertAdjacentHTML('afterbegin', html);
+// 4. Moderation Panel
+function openAdminPanel() {
+    document.getElementById('admin-modal').style.display = 'flex';
 }
 
-// 6. ADMIN CODES (nosa777)
-document.addEventListener("keydown", (e) => {
-    secretBuffer += e.key;
-    if (secretBuffer.length > 20) secretBuffer = secretBuffer.substring(1);
-    
-    if (secretBuffer.includes("nosa777")) {
-        localStorage.setItem('lc_admin_token', 'CHIEF_OF_NETWORK_99');
-        localStorage.setItem('lc_id', 'ADMIN-NOSA');
-        alert("ACCESS GRANTED");
+function tryAdmin() {
+    const pass = document.getElementById('admin-pass').value;
+    // Replace this with your actual secure check
+    if (pass === "your_secure_password") {
+        isAdmin = true;
+        localStorage.setItem('is_mod', 'true');
+        alert("Logged in as Staff");
         location.reload();
     }
-});
+}
+
+function openMod(uid) {
+    document.getElementById('target-uid').innerText = uid;
+    document.getElementById('mod-popup').style.display = 'flex';
+}
+
+function executeBan() {
+    const uid = document.getElementById('target-uid').innerText;
+    const reason = document.getElementById('ban-reason').value;
+    const duration = document.getElementById('ban-duration').value;
+    
+    socket.emit('admin_ban', { uid, reason, duration });
+    closeModal();
+}
+
+function closeModal() {
+    document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+}
