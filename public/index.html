@@ -3,80 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lowchan | Global Network</title>
+    <title>Lowchan | Internal</title>
     <link rel="stylesheet" href="style.css">
     <script src="/socket.io/socket.io.js"></script>
 </head>
-<body style="background: #050505; color: white; margin: 0;">
+<body>
+    <div id="loader"><h1>LOWCHAN</h1></div>
 
-    <div id="loader" style="position:fixed; inset:0; background:#000; z-index:10000; display:flex; align-items:center; justify-content:center; text-align:center; font-family:sans-serif;">
-        <div>
-            <h1 style="color:#7c3aed; margin:0;">LOWCHAN</h1>
-            <p style="color:#555; font-size:12px;">SYNCING_NODES...</p>
-        </div>
-    </div>
-
-    <script>
-        setTimeout(() => { 
-            const l = document.getElementById('loader');
-            if(l) l.style.opacity = '0';
-            setTimeout(() => { if(l) l.remove(); }, 500);
-        }, 3000);
-    </script>
-
-    <nav class="navbar" style="padding: 15px; background: rgba(255,255,255,0.05);">
-        <div class="nav-content" style="max-width: 900px; margin: 0 auto; display: flex; justify-content: space-between;">
-            <span class="brand" onclick="nav('home')" style="cursor:pointer; font-weight:bold;">LOWCHAN <small id="id-tag" style="opacity:0.5;"></small></span>
+    <nav class="navbar">
+        <div class="nav-content">
+            <span class="brand" onclick="nav('home')">LOWCHAN <small id="id-tag"></small></span>
+            <div class="status">LIVE: <span id="count">0</span></div>
             <div class="menu">
-                <button onclick="nav('rules')" style="background:none; border:1px solid #444; color:white; cursor:pointer;">Rules</button>
+                <button onclick="nav('rules')">Legal</button>
             </div>
         </div>
     </nav>
 
-    <div class="app-container" style="max-width: 800px; margin: 20px auto; padding: 0 20px;">
-        
+    <div class="app-container">
         <div id="view-home" class="page">
-            <div class="hero-card" style="margin-bottom: 20px;">
-                <h2 style="color: #7c3aed;">:: GLOBAL_ACTIVITY</h2>
-                <div class="ad-box" style="background:#111; padding:10px; min-height:90px; margin: 15px 0;">
+            <div class="panel">
+                <div class="ad-slot">
                     <script type="text/javascript">
                         atOptions = { 'key' : 'b1637057c1ef17630b41564da4135bf9', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
                     </script>
                     <script type="text/javascript" src="https://www.highperformanceformat.com/b1637057c1ef17630b41564da4135bf9/invoke.js"></script>
                 </div>
+                <textarea id="msg" placeholder="Type a message..."></textarea>
+                <button class="btn" onclick="send('home')">POST_GLOBAL</button>
             </div>
-
-            <div class="post-input-card" style="background: #111; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <textarea id="msg" style="width:100%; height:80px; background:#000; color:white; border:1px solid #333; padding:10px; box-sizing:border-box;" placeholder="Write to the network..."></textarea>
-                <button onclick="send()" style="width:100%; padding:10px; margin-top:10px; background:#7c3aed; border:none; color:white; font-weight:bold; cursor:pointer;">EXECUTE_POST</button>
-            </div>
-
             <div id="feed"></div>
-
-            <div class="board-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:30px;">
-                <div class="grid-item">
-                    <h3 style="font-size:12px; opacity:0.5;">ACADEMICS</h3>
-                    <button onclick="nav('math')">/math/</button>
-                    <button onclick="nav('sci')">/sci/</button>
-                </div>
-                <div class="grid-item">
-                    <h3 style="font-size:12px; opacity:0.5;">INTERESTS</h3>
-                    <button onclick="nav('v')">/v/</button>
-                    <button onclick="nav('a')">/a/</a>
-                </div>
+            
+            <div class="board-grid">
+                <button onclick="nav('math')">/math/</button>
+                <button onclick="nav('sci')">/sci/</button>
+                <button onclick="nav('cs')">/cs/</button>
+                <button onclick="nav('tech')">/tech/</button>
+                <button onclick="nav('v')">/v/</button>
+                <button onclick="nav('a')">/a/</button>
+                <button onclick="nav('news')">/news/</button>
             </div>
         </div>
 
         <div id="view-board" class="page" style="display:none;">
-            <div class="board-top" style="display:flex; justify-content:space-between; align-items:center;">
+            <div class="board-header">
                 <h2 id="board-title">/board/</h2>
-                <button onclick="nav('home')" style="background:#333; color:white; border:none; padding:5px 15px; cursor:pointer;">EXIT</button>
+                <button onclick="nav('home')">BACK</button>
             </div>
-            <div class="post-input-card" style="background: #111; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <textarea id="boardMsg" style="width:100%; height:80px; background:#000; color:white; border:1px solid #333; padding:10px; box-sizing:border-box;" placeholder="Post to board..."></textarea>
-                <button onclick="sendBoardPost()" style="width:100%; padding:10px; margin-top:10px; background:#7c3aed; border:none; color:white; font-weight:bold; cursor:pointer;">SUBMIT</button>
+            <div class="panel">
+                <textarea id="board-msg" placeholder="Post to board..."></textarea>
+                <button class="btn" onclick="send('board')">POST_TO_BOARD</button>
             </div>
-            <div id="boardFeed"></div>
+            <div id="board-feed"></div>
+        </div>
+
+        <div id="view-rules" class="page" style="display:none;">
+            <div class="panel">
+                <h2>RULES</h2>
+                <p>1. No illegal content. 2. No doxxing. 3. Respect the node.</p>
+                <hr>
+                <h2>PRIVACY POLICY</h2>
+                <p>We store zero personal data. All IDs are local to your browser.</p>
+                <hr>
+                <h2>DMCA</h2>
+                <p>Contact: k2009546@students.katyisd.org | Discord: nosaissohot_07823</p>
+                <button class="btn" onclick="nav('home')">RETURN</button>
+            </div>
         </div>
     </div>
 
