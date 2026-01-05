@@ -2,72 +2,82 @@ const socket = io();
 let currentBoard = 'home';
 let isStaff = localStorage.getItem('isStaff') === 'true';
 
-// ATTACH EVENT LISTENERS SAFELY
+// Check Staff Status on Load
+if(isStaff) {
+    document.getElementById('admin-tab').style.display = 'inline';
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-    const postBtn = document.getElementById('post-btn');
-    if(postBtn) {
-        postBtn.onclick = () => {
-            const img = document.getElementById('img-input').value;
-            const msg = document.getElementById('text-input').value;
-            if(!msg) return alert("Text required");
-            
-            socket.emit('new_post', {
-                board: currentBoard,
-                text: msg,
-                img: img,
-                userId: localStorage.getItem('lc_id') || "Anon"
-            });
-            document.getElementById('img-input').value = "";
-            document.getElementById('text-input').value = "";
-        };
-    }
+    // FIX: Listen for clicks on the Submit button directly
+    document.getElementById('post-btn').addEventListener('click', () => {
+        const img = document.getElementById('img-input').value;
+        const msg = document.getElementById('text-input').value;
+        
+        if(!msg) return alert("Message is required to post.");
+
+        socket.emit('new_post', {
+            board: currentBoard,
+            text: msg,
+            img: img || null, // Image is now optional
+            userId: localStorage.getItem('lc_id') || "Anon"
+        });
+
+        // Clear inputs
+        document.getElementById('img-input').value = "";
+        document.getElementById('text-input').value = "";
+    });
+
+    socket.emit('request_threads', 'home');
 });
 
 // NAVIGATION
 function nav(board) {
+    if(board === 'admin' && !isStaff) return alert("Unauthorized");
+    
+    currentBoard = board;
     document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+    
     if(board === 'home') {
         document.getElementById('view-home').style.display = 'flex';
+    } else if(board === 'admin') {
+        document.getElementById('view-admin').style.display = 'flex';
     } else {
-        currentBoard = board;
         document.getElementById('view-board').style.display = 'block';
         document.getElementById('board-title').innerText = `/${board}/`;
         socket.emit('request_threads', board);
     }
 }
 
-// LOGIN SYSTEM
+// ADMIN FUNCTIONS
+function openAdminModal() { document.getElementById('admin-modal').style.display = 'flex'; }
+function closeAdminModal() { document.getElementById('admin-modal').style.display = 'none'; }
+
 function handleLogin() {
     const pass = document.getElementById('admin-pass').value;
-    if(pass === "your_password_here") { // Change this!
+    // STRONG PASSWORD
+    if(pass === "LC-99-Global-Admin-Secure-777") {
         localStorage.setItem('isStaff', 'true');
-        alert("Staff Authenticated");
+        alert("ACCESS GRANTED");
         location.reload();
     } else {
-        alert("Invalid Passkey");
+        alert("INVALID KEY");
     }
 }
 
-// UPVOTE / DOWNVOTE
-function castVote(id, type) {
-    socket.emit('vote', { id, type });
-}
-
-// RENDERING CATALOG
+// RECEIVING DATA
 socket.on('load_threads', (threads) => {
     const container = document.getElementById('catalog-container');
     container.innerHTML = "";
     threads.forEach(t => {
+        const imgHtml = t.img ? `<img src="${t.img}" class="thumb">` : `<div class="no-img">NO_IMAGE</div>`;
         const card = `
             <div class="thread-card terminal-border">
-                <img src="${t.img || 'https://via.placeholder.com/150'}" class="thumb">
-                <div class="vote-controls">
-                    <span onclick="castVote('${t.id}', 'up')">▲</span>
-                    <b>${t.score || 0}</b>
-                    <span onclick="castVote('${t.id}', 'down')">▼</span>
+                ${imgHtml}
+                <div class="post-info">
+                    <b>${t.userId}</b>
+                    <p>${t.text}</p>
+                    ${isStaff ? `<button onclick="deletePost('${t.id}')">DEL</button>` : ""}
                 </div>
-                <p>${t.text.substring(0, 30)}...</p>
-                ${isStaff ? `<button onclick="openMod('${t.userId}')">BAN</button>` : ""}
             </div>`;
         container.insertAdjacentHTML('beforeend', card);
     });
