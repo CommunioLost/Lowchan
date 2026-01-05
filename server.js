@@ -1,46 +1,54 @@
 const express = require('express');
 const app = express();
-const http = require('http');
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 const path = require('path');
 
-// Serve public files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// GLOBAL MEMORY (This stores posts on the server while it is running)
-// If the server restarts, this wipes (normal for simple imageboards)
-let globalPosts = [];
+let boardData = {
+    home: [], math: [], sci: [], cs: [], v: [], a: [], mu: [], tech: [], news: []
+};
+
+let onlineUsers = 0;
+const ADMIN_TOKEN = "CHIEF_OF_NETWORK_99"; 
 
 io.on('connection', (socket) => {
-    console.log('A student connected');
+    onlineUsers++;
+    io.emit('user_count', onlineUsers);
 
-    // 1. When someone joins, send them the current history
-    socket.emit('load_history', globalPosts);
+    socket.on('request_board_history', (board) => {
+        if (boardData[board]) socket.emit('load_history', boardData[board]);
+    });
 
-    // 2. When someone sends a post
-    socket.on('new_post', (postData) => {
-        // Add timestamp server-side to prevent faking
-        postData.date = new Date().toLocaleString();
-        
-        // Save to server memory
-        globalPosts.push(postData);
+    socket.on('new_post', (data) => {
+        const post = {
+            postId: "PID-" + Date.now(),
+            text: data.text,
+            userId: data.userId,
+            board: data.board || 'home',
+            date: new Date().toLocaleTimeString()
+        };
+        if (boardData[post.board]) {
+            boardData[post.board].push(post);
+            if (boardData[post.board].length > 100) boardData[post.board].shift();
+            io.emit('receive_post', post);
+        }
+    });
 
-        // Keep memory clean (only keep last 100 posts)
-        if (globalPosts.length > 100) globalPosts.shift();
+    socket.on('admin_delete', (req) => {
+        if (req.token === ADMIN_TOKEN) {
+            Object.keys(boardData).forEach(b => {
+                boardData[b] = boardData[b].filter(p => p.postId !== req.postId);
+            });
+            io.emit('refresh_view');
+        }
+    });
 
-        // BROADCAST: Send this post to EVERYONE immediately
-        io.emit('receive_post', postData);
+    socket.on('disconnect', () => {
+        onlineUsers--;
+        io.emit('user_count', onlineUsers);
     });
 });
 
-// Handle 404s
-app.use((req, res) => {
-    res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
-});
-
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-    console.log(`Lowchan Real-Time Server running on port ${PORT}`);
-});
+http.listen(process.env.PORT || 3000, () => console.log('Network Active'));
