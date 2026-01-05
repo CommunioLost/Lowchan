@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lowchan | Internal</title>
+    <title>Lowchan | Internal Node</title>
     <link rel="stylesheet" href="style.css">
     <script src="/socket.io/socket.io.js"></script>
 </head>
@@ -12,66 +11,57 @@
 
     <nav class="navbar">
         <div class="nav-content">
-            <span class="brand" onclick="nav('home')">LOWCHAN <small id="id-tag"></small></span>
-            <div class="status">LIVE: <span id="count">0</span></div>
+            <div class="user-info" onclick="nav('profile')">
+                <img id="my-pfp" src="https://api.dicebear.com/7.x/identicon/svg?seed=default" class="pfp-small">
+                <span id="id-tag"></span>
+            </div>
             <div class="menu">
+                <button onclick="nav('home')">Feed</button>
                 <button onclick="nav('rules')">Legal</button>
             </div>
         </div>
     </nav>
 
     <div class="app-container">
-        <div id="view-home" class="page">
+        <div id="view-profile" class="page" style="display:none;">
             <div class="panel">
-                <div class="ad-slot">
-                    <script type="text/javascript">
-                        atOptions = { 'key' : 'b1637057c1ef17630b41564da4135bf9', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
-                    </script>
-                    <script type="text/javascript" src="https://www.highperformanceformat.com/b1637057c1ef17630b41564da4135bf9/invoke.js"></script>
+                <h2>USER_PROFILE</h2>
+                <div class="profile-edit">
+                    <p>Profile Picture (URL):</p>
+                    <input type="text" id="pfp-url" placeholder="Paste image link...">
+                    <p>Social Link:</p>
+                    <input type="text" id="social-link" placeholder="Discord / X / Insta">
+                    <button class="btn" onclick="saveProfile()">SAVE_CHANGES</button>
                 </div>
-                <textarea id="msg" placeholder="Type a message..."></textarea>
-                <button class="btn" onclick="send('home')">POST_GLOBAL</button>
-            </div>
-            <div id="feed"></div>
-            
-            <div class="board-grid">
-                <button onclick="nav('math')">/math/</button>
-                <button onclick="nav('sci')">/sci/</button>
-                <button onclick="nav('cs')">/cs/</button>
-                <button onclick="nav('tech')">/tech/</button>
-                <button onclick="nav('v')">/v/</button>
-                <button onclick="nav('a')">/a/</button>
-                <button onclick="nav('news')">/news/</button>
             </div>
         </div>
 
         <div id="view-board" class="page" style="display:none;">
             <div class="board-header">
                 <h2 id="board-title">/board/</h2>
-                <button onclick="nav('home')">BACK</button>
+                <button class="exit-btn" onclick="nav('home')">EXIT</button>
             </div>
             <div class="panel">
-                <textarea id="board-msg" placeholder="Post to board..."></textarea>
-                <button class="btn" onclick="send('board')">POST_TO_BOARD</button>
+                <textarea id="board-msg" placeholder="Broadcast to this board..."></textarea>
+                <button class="btn" onclick="send('board')">TRANSMIT</button>
             </div>
             <div id="board-feed"></div>
         </div>
 
-        <div id="view-rules" class="page" style="display:none;">
+        <div id="view-home" class="page">
             <div class="panel">
-                <h2>RULES</h2>
-                <p>1. No illegal content. 2. No doxxing. 3. Respect the node.</p>
-                <hr>
-                <h2>PRIVACY POLICY</h2>
-                <p>We store zero personal data. All IDs are local to your browser.</p>
-                <hr>
-                <h2>DMCA</h2>
-                <p>Contact: k2009546@students.katyisd.org | Discord: nosaissohot_07823</p>
-                <button class="btn" onclick="nav('home')">RETURN</button>
+                <textarea id="msg" placeholder="Global transmission..."></textarea>
+                <button class="btn" onclick="send('home')">POST_GLOBAL</button>
+            </div>
+            <div id="feed"></div>
+            <div class="board-grid">
+                <button onclick="nav('math')">/math/</button>
+                <button onclick="nav('sci')">/sci/</button>
+                <button onclick="nav('cs')">/cs/</button>
+                <button onclick="nav('media')" class="media-btn">/media/</button>
             </div>
         </div>
     </div>
-
     <script src="app.js"></script>
 </body>
 </html>
