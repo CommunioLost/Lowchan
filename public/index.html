@@ -2,30 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lowchan | Internal Node</title>
     <link rel="stylesheet" href="style.css">
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-
-    <div id="loader" style="position:fixed; inset:0; background:#000; z-index:10000; display:flex; align-items:center; justify-content:center; flex-direction:column; transition: opacity 0.5s;">
-        <h1 style="color:#7c3aed; font-family:monospace; margin:0;">LOWCHAN</h1>
-        <p style="color:#333; font-family:monospace; font-size:10px;">ESTABLISHING_CONNECTION...</p>
-    </div>
-
-    <script>
-        setTimeout(() => {
-            const loader = document.getElementById('loader');
-            if(loader) {
-                loader.style.opacity = '0';
-                setTimeout(() => loader.remove(), 500);
-            }
-        }, 3000); // 3-second emergency limit
-    </script>
+    <div id="loader"><h1>LOWCHAN</h1></div>
 
     <div id="announcement-bar" class="notice-strip">
-        <span id="notice-text">Welcome to the Network. Be anonymous. Be safe.</span>
+        <span id="notice-text">Connecting...</span>
         <button id="edit-notice" style="display:none;" onclick="changeNotice()">[EDIT]</button>
     </div>
 
@@ -52,13 +37,13 @@
 
         <div id="view-home" class="page">
             <div class="composer">
-                <textarea id="msg" placeholder="Broadcast to global feed..."></textarea>
-                <button class="btn-main" onclick="send('home')">EXECUTE_POST</button>
+                <textarea id="msg" placeholder="Broadcast to global..."></textarea>
+                <button class="btn-main" onclick="sendPost('home')">TRANSMIT</button>
             </div>
             <div id="feed"></div>
             
             <div class="directory">
-                <h3>DIRECTORY</h3>
+                <h3>DIRECTORIES</h3>
                 <div class="board-grid">
                     <button onclick="nav('math')">/math/</button>
                     <button onclick="nav('sci')">/sci/</button>
@@ -72,8 +57,19 @@
             </div>
         </div>
 
+        <div id="view-board" class="page" style="display:none;">
+            <div class="board-head">
+                <h2 id="board-title">/board/</h2>
+                <button onclick="nav('home')">BACK</button>
+            </div>
+            <div class="composer">
+                <textarea id="board-msg" placeholder="Post to board..."></textarea>
+                <button class="btn-main" onclick="sendPost('board')">SUBMIT_TO_BOARD</button>
+            </div>
+            <div id="board-feed"></div>
         </div>
 
+        </div>
     <script src="app.js"></script>
 </body>
 </html>
