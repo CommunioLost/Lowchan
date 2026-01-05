@@ -1,77 +1,74 @@
 const socket = io();
 let currentBoard = 'home';
-let isAdmin = false;
+let isStaff = localStorage.getItem('isStaff') === 'true';
 
-// 1. Navigation & Catalog
+// ATTACH EVENT LISTENERS SAFELY
+document.addEventListener("DOMContentLoaded", () => {
+    const postBtn = document.getElementById('post-btn');
+    if(postBtn) {
+        postBtn.onclick = () => {
+            const img = document.getElementById('img-input').value;
+            const msg = document.getElementById('text-input').value;
+            if(!msg) return alert("Text required");
+            
+            socket.emit('new_post', {
+                board: currentBoard,
+                text: msg,
+                img: img,
+                userId: localStorage.getItem('lc_id') || "Anon"
+            });
+            document.getElementById('img-input').value = "";
+            document.getElementById('text-input').value = "";
+        };
+    }
+});
+
+// NAVIGATION
 function nav(board) {
     document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-    if (board === 'home') {
-        document.getElementById('view-home').style.display = 'block';
+    if(board === 'home') {
+        document.getElementById('view-home').style.display = 'flex';
     } else {
         currentBoard = board;
         document.getElementById('view-board').style.display = 'block';
-        document.getElementById('board-header').innerText = `/${board}/`;
+        document.getElementById('board-title').innerText = `/${board}/`;
         socket.emit('request_threads', board);
     }
 }
 
-// 2. Voting System
-function vote(postId, type) {
-    socket.emit('cast_vote', { postId, type });
+// LOGIN SYSTEM
+function handleLogin() {
+    const pass = document.getElementById('admin-pass').value;
+    if(pass === "your_password_here") { // Change this!
+        localStorage.setItem('isStaff', 'true');
+        alert("Staff Authenticated");
+        location.reload();
+    } else {
+        alert("Invalid Passkey");
+    }
 }
 
-// 3. Rendering Catalog Style
-socket.on('thread_list', (threads) => {
-    const container = document.getElementById('thread-container');
-    container.innerHTML = '';
+// UPVOTE / DOWNVOTE
+function castVote(id, type) {
+    socket.emit('vote', { id, type });
+}
+
+// RENDERING CATALOG
+socket.on('load_threads', (threads) => {
+    const container = document.getElementById('catalog-container');
+    container.innerHTML = "";
     threads.forEach(t => {
         const card = `
-            <div class="thread-card">
-                <img src="${t.img}" class="thread-img">
-                <div class="thread-info">
-                    <div class="vote-bar">
-                        <span onclick="vote('${t.id}', 'up')">▲</span>
-                        <span>${t.score || 0}</span>
-                        <span onclick="vote('${t.id}', 'down')">▼</span>
-                    </div>
-                    <p class="thread-excerpt">${t.text.substring(0, 50)}...</p>
-                    ${isAdmin ? `<button onclick="openMod('${t.userId}')">BAN</button> <button onclick="del('${t.id}')">DEL</button>` : ''}
+            <div class="thread-card terminal-border">
+                <img src="${t.img || 'https://via.placeholder.com/150'}" class="thumb">
+                <div class="vote-controls">
+                    <span onclick="castVote('${t.id}', 'up')">▲</span>
+                    <b>${t.score || 0}</b>
+                    <span onclick="castVote('${t.id}', 'down')">▼</span>
                 </div>
+                <p>${t.text.substring(0, 30)}...</p>
+                ${isStaff ? `<button onclick="openMod('${t.userId}')">BAN</button>` : ""}
             </div>`;
         container.insertAdjacentHTML('beforeend', card);
     });
 });
-
-// 4. Moderation Panel
-function openAdminPanel() {
-    document.getElementById('admin-modal').style.display = 'flex';
-}
-
-function tryAdmin() {
-    const pass = document.getElementById('admin-pass').value;
-    // Replace this with your actual secure check
-    if (pass === "your_secure_password") {
-        isAdmin = true;
-        localStorage.setItem('is_mod', 'true');
-        alert("Logged in as Staff");
-        location.reload();
-    }
-}
-
-function openMod(uid) {
-    document.getElementById('target-uid').innerText = uid;
-    document.getElementById('mod-popup').style.display = 'flex';
-}
-
-function executeBan() {
-    const uid = document.getElementById('target-uid').innerText;
-    const reason = document.getElementById('ban-reason').value;
-    const duration = document.getElementById('ban-duration').value;
-    
-    socket.emit('admin_ban', { uid, reason, duration });
-    closeModal();
-}
-
-function closeModal() {
-    document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
-}
