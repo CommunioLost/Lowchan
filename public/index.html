@@ -11,57 +11,87 @@
 
     <nav class="navbar">
         <div class="nav-content">
-            <div class="user-info" onclick="nav('profile')">
-                <img id="my-pfp" src="https://api.dicebear.com/7.x/identicon/svg?seed=default" class="pfp-small">
-                <span id="id-tag"></span>
+            <div class="user-block" onclick="nav('profile')">
+                <img id="my-pfp" src="https://api.dicebear.com/7.x/identicon/svg?seed=user" class="pfp-nav">
+                <span id="id-tag">Connecting...</span>
             </div>
-            <div class="menu">
-                <button onclick="nav('home')">Feed</button>
-                <button onclick="nav('rules')">Legal</button>
+            <div class="nav-links">
+                <button onclick="nav('home')">Global</button>
+                <button onclick="nav('rules')">Legal/DMCA</button>
             </div>
         </div>
     </nav>
 
     <div class="app-container">
-        <div id="view-profile" class="page" style="display:none;">
-            <div class="panel">
-                <h2>USER_PROFILE</h2>
-                <div class="profile-edit">
-                    <p>Profile Picture (URL):</p>
-                    <input type="text" id="pfp-url" placeholder="Paste image link...">
-                    <p>Social Link:</p>
-                    <input type="text" id="social-link" placeholder="Discord / X / Insta">
-                    <button class="btn" onclick="saveProfile()">SAVE_CHANGES</button>
+        <div class="ad-container">
+            <script type="text/javascript">
+                atOptions = { 'key' : 'b1637057c1ef17630b41564da4135bf9', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
+            </script>
+            <script type="text/javascript" src="https://www.highperformanceformat.com/b1637057c1ef17630b41564da4135bf9/invoke.js"></script>
+        </div>
+
+        <div id="view-home" class="page">
+            <div class="composer">
+                <textarea id="msg" placeholder="Broadcast to the network..."></textarea>
+                <button class="btn-main" onclick="send('home')">EXECUTE_POST</button>
+            </div>
+            <div id="feed"></div>
+            
+            <div class="directory">
+                <h3>DIRECTORY</h3>
+                <div class="board-grid">
+                    <button onclick="nav('math')">/math/</button>
+                    <button onclick="nav('sci')">/sci/</button>
+                    <button onclick="nav('cs')">/cs/</button>
+                    <button onclick="nav('tech')">/tech/</button>
+                    <button onclick="nav('media')" class="highlight">/media/</button>
+                    <button onclick="nav('news')">/news/</button>
+                    <button onclick="nav('v')">/v/</button>
+                    <button onclick="nav('a')">/a/</button>
                 </div>
             </div>
         </div>
 
         <div id="view-board" class="page" style="display:none;">
-            <div class="board-header">
+            <div class="board-head">
                 <h2 id="board-title">/board/</h2>
-                <button class="exit-btn" onclick="nav('home')">EXIT</button>
+                <button class="btn-small" onclick="nav('home')">BACK</button>
             </div>
-            <div class="panel">
-                <textarea id="board-msg" placeholder="Broadcast to this board..."></textarea>
-                <button class="btn" onclick="send('board')">TRANSMIT</button>
+            <div class="composer">
+                <textarea id="board-msg" placeholder="Post to this directory..."></textarea>
+                <button class="btn-main" onclick="send('board')">SUBMIT_DATA</button>
             </div>
             <div id="board-feed"></div>
         </div>
 
-        <div id="view-home" class="page">
+        <div id="view-profile" class="page" style="display:none;">
             <div class="panel">
-                <textarea id="msg" placeholder="Global transmission..."></textarea>
-                <button class="btn" onclick="send('home')">POST_GLOBAL</button>
+                <h2>IDENTITY_SETTINGS</h2>
+                <div class="input-group">
+                    <label>PFP URL:</label>
+                    <input type="text" id="pfp-input" placeholder="https://link-to-image.png">
+                </div>
+                <div class="input-group">
+                    <label>Social Link (Discord/X):</label>
+                    <input type="text" id="social-input" placeholder="@username">
+                </div>
+                <button class="btn-main" onclick="updateProfile()">SAVE_IDENTITY</button>
             </div>
-            <div id="feed"></div>
-            <div class="board-grid">
-                <button onclick="nav('math')">/math/</button>
-                <button onclick="nav('sci')">/sci/</button>
-                <button onclick="nav('cs')">/cs/</button>
-                <button onclick="nav('media')" class="media-btn">/media/</button>
+        </div>
+
+        <div id="view-rules" class="page" style="display:none;">
+            <div class="panel">
+                <h2>RULES_OF_ENGAGEMENT</h2>
+                <p>1. No illegal content. 2. No personal info leaks (Doxxing). 3. Use common sense.</p>
+                <hr>
+                <h2>DMCA / CONTACT</h2>
+                <p>Email: k2009546@students.katyisd.org</p>
+                <p>Discord: nosaissohot_07823</p>
+                <button class="btn-main" onclick="nav('home')">CLOSE</button>
             </div>
         </div>
     </div>
+
     <script src="app.js"></script>
 </body>
 </html>
