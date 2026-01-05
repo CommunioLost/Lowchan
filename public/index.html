@@ -2,71 +2,77 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Lowchan | Internal Node</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lowchan | Index</title>
     <link rel="stylesheet" href="style.css">
     <script src="/socket.io/socket.io.js"></script>
 </head>
-<body>
-    <div id="loader"><h1>LOWCHAN</h1><p>CONNECTING_TO_STATION...</p></div>
+<body class="chan-theme">
+    <header class="board-list">
+        [<a href="#" onclick="nav('home')">home</a> / 
+        <a href="#" onclick="nav('v')">v</a> / 
+        <a href="#" onclick="nav('a')">a</a> / 
+        <a href="#" onclick="nav('sci')">sci</a> / 
+        <a href="#" onclick="nav('tech')">tech</a> / 
+        <a href="#" onclick="nav('fit')">fit</a>] 
+        <span class="admin-link" onclick="openAdminPanel()">[Admin]</span>
+    </header>
 
-    <div id="announcement-bar" class="notice-strip">
-        <span id="notice-text">SYSTEM_OFFLINE: Waiting for Socket...</span>
-        <button id="edit-notice" style="display:none;" onclick="changeNotice()">[EDIT]</button>
-    </div>
-
-    <nav class="navbar">
-        <div class="nav-content">
-            <div class="user-block" onclick="nav('profile')">
-                <img id="my-pfp" src="" class="pfp-nav" onerror="this.src='https://api.dicebear.com/7.x/identicon/svg?seed=user'">
-                <span id="id-tag">ID-SYNCING</span>
+    <div id="app-content">
+        <div id="view-home" class="page">
+            <h1 class="site-title">LOWCHAN</h1>
+            <div class="stats-box">
+                Total Posts: <span id="total-posts">0</span> | Active Users: <span id="active-users">1</span>
             </div>
-            <div class="nav-links">
-                <button onclick="nav('home')">Feed</button>
-                <button onclick="nav('news')">News</button>
-                <button onclick="nav('tech')">Tech</button>
-                <button onclick="nav('rules')">Legal</button>
+            <div class="board-directory">
+                <h3>Boards</h3>
+                <ul>
+                    <li><a href="#" onclick="nav('v')">/v/ - Video Games</a></li>
+                    <li><a href="#" onclick="nav('a')">/a/ - Anime & Manga</a></li>
+                    <li><a href="#" onclick="nav('tech')">/tech/ - Technology</a></li>
+                </ul>
             </div>
         </div>
-    </nav>
 
-    <div class="app-container">
-        <div class="ad-container">
-            <script type="text/javascript">
-                atOptions = { 'key' : 'b1637057c1ef17630b41564da4135bf9', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
-            </script>
-            <script type="text/javascript" src="https://www.highperformanceformat.com/b1637057c1ef17630b41564da4135bf9/invoke.js"></script>
-        </div>
-
-        <div id="view-feed" class="page">
-            <h2 id="board-title">/global/</h2>
-            <div class="composer">
-                <textarea id="post-input" placeholder="Enter transmission..."></textarea>
-                <button class="btn-main" onclick="handleSubmit()">SEND_DATA</button>
-            </div>
-            <div id="main-feed"></div>
-            
-            <div class="directory" id="dir-menu">
-                <h3>DIRECTORIES</h3>
-                <div class="board-grid">
-                    <button onclick="nav('math')">/math/</button>
-                    <button onclick="nav('sci')">/sci/</button>
-                    <button onclick="nav('cs')">/cs/</button>
-                    <button onclick="nav('media')" class="highlight">/media/</button>
-                    <button onclick="nav('v')">/v/</button>
-                    <button onclick="nav('a')">/a/</button>
+        <div id="view-board" class="page" style="display:none;">
+            <h2 id="board-header">/board/</h2>
+            <div class="post-form-container">
+                <button onclick="toggleForm()" id="form-toggle">Start a New Thread</button>
+                <div id="post-form" class="hidden">
+                    <input type="text" id="post-pfp" placeholder="Image URL (Required)">
+                    <textarea id="post-text" placeholder="Comment"></textarea>
+                    <button onclick="submitThread()">Post</button>
                 </div>
             </div>
-        </div>
-
-        <div id="view-profile" class="page" style="display:none;">
-            <div class="panel">
-                <h2>USER_SETTINGS</h2>
-                <input type="text" id="pfp-url" placeholder="PFP Image URL">
-                <input type="text" id="social-link" placeholder="Discord/Social Link">
-                <button class="btn-main" onclick="saveProfile()">UPDATE_IDENTITY</button>
-            </div>
+            <hr>
+            <div id="thread-container" class="catalog-grid"></div>
         </div>
     </div>
+
+    <div id="admin-modal" class="modal">
+        <div class="modal-content">
+            <h3>Staff Authentication</h3>
+            <input type="password" id="admin-pass" placeholder="Enter Credentials">
+            <button onclick="tryAdmin()">Login</button>
+            <button onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <div id="mod-popup" class="modal">
+        <div class="modal-content">
+            <h3>Ban User</h3>
+            <p>User ID: <span id="target-uid"></span></p>
+            <input type="text" id="ban-reason" placeholder="Reason">
+            <select id="ban-duration">
+                <option value="1">24 Hours</option>
+                <option value="7">7 Days</option>
+                <option value="0">Permanent</option>
+            </select>
+            <button onclick="executeBan()">Confirm Ban</button>
+            <button onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+
     <script src="app.js"></script>
 </body>
 </html>
