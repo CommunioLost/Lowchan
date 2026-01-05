@@ -7,21 +7,23 @@
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-    <div id="loader"><h1>LOWCHAN</h1></div>
+    <div id="loader"><h1>LOWCHAN</h1><p>CONNECTING_TO_STATION...</p></div>
 
     <div id="announcement-bar" class="notice-strip">
-        <span id="notice-text">Connecting...</span>
+        <span id="notice-text">SYSTEM_OFFLINE: Waiting for Socket...</span>
         <button id="edit-notice" style="display:none;" onclick="changeNotice()">[EDIT]</button>
     </div>
 
     <nav class="navbar">
         <div class="nav-content">
             <div class="user-block" onclick="nav('profile')">
-                <img id="my-pfp" src="https://api.dicebear.com/7.x/identicon/svg?seed=user" class="pfp-nav">
-                <span id="id-tag">ID-00000</span>
+                <img id="my-pfp" src="" class="pfp-nav" onerror="this.src='https://api.dicebear.com/7.x/identicon/svg?seed=user'">
+                <span id="id-tag">ID-SYNCING</span>
             </div>
             <div class="nav-links">
-                <button onclick="nav('home')">Global</button>
+                <button onclick="nav('home')">Feed</button>
+                <button onclick="nav('news')">News</button>
+                <button onclick="nav('tech')">Tech</button>
                 <button onclick="nav('rules')">Legal</button>
             </div>
         </div>
@@ -35,41 +37,36 @@
             <script type="text/javascript" src="https://www.highperformanceformat.com/b1637057c1ef17630b41564da4135bf9/invoke.js"></script>
         </div>
 
-        <div id="view-home" class="page">
+        <div id="view-feed" class="page">
+            <h2 id="board-title">/global/</h2>
             <div class="composer">
-                <textarea id="msg" placeholder="Broadcast to global..."></textarea>
-                <button class="btn-main" onclick="sendPost('home')">TRANSMIT</button>
+                <textarea id="post-input" placeholder="Enter transmission..."></textarea>
+                <button class="btn-main" onclick="handleSubmit()">SEND_DATA</button>
             </div>
-            <div id="feed"></div>
+            <div id="main-feed"></div>
             
-            <div class="directory">
+            <div class="directory" id="dir-menu">
                 <h3>DIRECTORIES</h3>
                 <div class="board-grid">
                     <button onclick="nav('math')">/math/</button>
                     <button onclick="nav('sci')">/sci/</button>
                     <button onclick="nav('cs')">/cs/</button>
-                    <button onclick="nav('tech')">/tech/</button>
                     <button onclick="nav('media')" class="highlight">/media/</button>
-                    <button onclick="nav('news')">/news/</button>
                     <button onclick="nav('v')">/v/</button>
                     <button onclick="nav('a')">/a/</button>
                 </div>
             </div>
         </div>
 
-        <div id="view-board" class="page" style="display:none;">
-            <div class="board-head">
-                <h2 id="board-title">/board/</h2>
-                <button onclick="nav('home')">BACK</button>
+        <div id="view-profile" class="page" style="display:none;">
+            <div class="panel">
+                <h2>USER_SETTINGS</h2>
+                <input type="text" id="pfp-url" placeholder="PFP Image URL">
+                <input type="text" id="social-link" placeholder="Discord/Social Link">
+                <button class="btn-main" onclick="saveProfile()">UPDATE_IDENTITY</button>
             </div>
-            <div class="composer">
-                <textarea id="board-msg" placeholder="Post to board..."></textarea>
-                <button class="btn-main" onclick="sendPost('board')">SUBMIT_TO_BOARD</button>
-            </div>
-            <div id="board-feed"></div>
         </div>
-
-        </div>
+    </div>
     <script src="app.js"></script>
 </body>
 </html>
